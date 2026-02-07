@@ -3,22 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temporal DSP</title>
+    <title>Temporal DSP | Neuro-Auditory Intelligence</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        // The "Midnight" background from GitHub Dark Mode
+                        'deep-space': '#0d1117',
+                        'card-bg': '#161b22',
+                        'border-dim': '#30363d',
+                        // The Accents from your image
+                        'neon-purple': '#db61a2',
+                        'neon-blue': '#4c2889', 
+                        'neon-cyan': '#00f0ff',
+                        'neon-green': '#3fb950',
+                    },
+                    backgroundImage: {
+                        'aurora': 'linear-gradient(135deg, #db61a2 0%, #4c2889 50%, #00f0ff 100%)',
+                        'glass': 'rgba(22, 27, 34, 0.7)',
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        body { background: #0a0a0a; color: #e0e0e0; font-family: monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .box { border: 1px solid #333; padding: 40px; text-align: center; background: rgba(20,20,20,0.9); }
-        h1 { letter-spacing: 4px; font-weight: normal; margin-bottom: 5px; }
-        .sub { color: #666; font-size: 0.9em; letter-spacing: 2px; }
-        .status { margin-top: 30px; font-size: 0.8em; color: #00ff9d; }
-        .blink { animation: blink 2s infinite; }
-        @keyframes blink { 50% { opacity: 0.3; } }
+        /* Custom Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-slow { animation: float 6s ease-in-out infinite; }
+        .float-delayed { animation: float 6s ease-in-out 3s infinite; }
+        
+        /* The "Glow" behind elements */
+        .glow-effect {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(76, 40, 137, 0.4) 0%, rgba(13, 17, 23, 0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(50px);
+        }
     </style>
 </head>
-<body>
-    <div class="box">
-        <h1>TEMPORAL DSP</h1>
-        <div class="sub">NEURO-AUDITORY SIGNAL PROCESSING</div>
-        <div class="status">SYSTEM STATUS: <span class="blink">ONLINE</span></div>
-    </div>
+<body class="bg-deep-space text-gray-300 font-sans overflow-x-hidden selection:bg-neon-purple selection:text-white">
+
+    <nav class="flex justify-between items-center py-6 px-8 max-w-7xl mx-auto border-b border-border-dim/30 backdrop-blur-md sticky top-0 z-50 bg-deep-space/80">
+        <div class="text-xl font-bold tracking-tighter text-white">
+            TEMPORAL<span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-cyan">DSP</span>
+        </div>
+        <div class="hidden md:flex gap-6 text-sm font-medium">
+            <a href="#" class="hover:text-white transition-colors">Architecture</a>
+            <a href="#" class="hover:text-white transition-colors">Research</a>
+            <a href="#" class="text-neon-cyan hover:text-white transition-colors">Login</a>
+        </div>
+    </nav>
+
+    <main class="relative max-w-7xl mx-auto px-6 pt-20 pb-32">
+        
+        <div class="glow-effect top-20 left-1/4"></div>
+        <div class="glow-effect bottom-20 right-1/4 bg-blue-500/20"></div>
+
+        <div class="text-center max-w-4xl mx-auto mb-24">
+            <div class="inline-block mb-4 px-3 py-1 rounded-full border border-neon-purple/30 bg-neon-purple/10 text-neon-purple text-xs font-mono font-bold tracking-wider">
+                V1.0.0 INITIALIZATION
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-6 leading-tight">
+                Neuro-Auditory <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple via-blue-500 to-neon-cyan">
+                    Signal Intelligence
+                </span>
+            </h1>
+            
+            <p class="text-lg text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+                A high-performance audio analysis framework built on <span class="text-white font-medium">Rust</span> and <span class="text-white font-medium">Tauri</span>. 
+                Designed for precision, speed, and zero-latency deployment.
+            </p>
+            
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <a href="#" class="px-8 py-4 rounded-lg bg-white text-deep-space font-bold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+                    Explore Documentation
+                </a>
+                <a href="https://github.com/temporaldsp" class="px-8 py-4 rounded-lg border border-border-dim hover:border-gray-500 bg-card-bg/50 backdrop-blur transition-all font-mono text-sm flex items-center justify-center gap-2 group">
+                    <span>github.com/temporaldsp</span>
+                    <svg class="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            
+            <div class="p-8 rounded-2xl bg-card-bg border border-border-dim hover:border-neon-purple/50 transition-all hover:-translate-y-1 group relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-neon-purple/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div class="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center mb-6 text-2xl group-hover:scale-110 transition-transform text-white">
+                    ⚡
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Rust Core</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                    Built on the safety and concurrency of Rust. Memory-safe signal processing without the overhead of garbage collection.
+                </p>
+            </div>
+
+            <div class="p-8 rounded-2xl bg-card-bg border border-border-dim hover:border-neon-cyan/50 transition-all hover:-translate-y-1 group relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-neon-cyan/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div class="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center mb-6 text-2xl group-hover:scale-110 transition-transform text-white">
+                    🛡️
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Tauri Architecture</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                    Lean, secure binaries. We utilize the OS's native web renderer to keep application size under 5MB.
+                </p>
+            </div>
+
+            <div class="p-8 rounded-2xl bg-card-bg border border-border-dim hover:border-neon-green/50 transition-all hover:-translate-y-1 group relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-neon-green/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div class="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center mb-6 text-2xl group-hover:scale-110 transition-transform text-white">
+                    🧠
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">Neuro-Adaptive</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                    Algorithms designed to mimic human auditory perception, reducing fatigue during long mixing sessions.
+                </p>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="border-t border-border-dim/30 py-12 text-center text-sm text-gray-600 font-mono">
+        <p>&copy; 2026 Temporal DSP. All Systems Nominal.</p>
+        <p class="mt-2 text-xs opacity-50">Cork, Ireland • ID: T23-F9X7</p>
+    </footer>
+
 </body>
 </html>
