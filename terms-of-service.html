@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporal DSP | Neuro-Auditory Intelligence</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        // The "Midnight" background from GitHub Dark Mode
+                        'deep-space': '#0d1117',
+                        'card-bg': '#161b22',
+                        'border-dim': '#30363d',
+                        // The Accents from your image
+                        'neon-purple': '#db61a2',
+                        'neon-blue': '#4c2889', 
+                        'neon-cyan': '#00f0ff',
+                        'neon-green': '#3fb950',
+                    },
+                    backgroundImage: {
+                        'aurora': 'linear-gradient(135deg, #db61a2 0%, #4c2889 50%, #00f0ff 100%)',
+                        'glass': 'rgba(22, 27, 34, 0.7)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-slow { animation: float 6s ease-in-out infinite; }
+        .float-delayed { animation: float 6s ease-in-out 3s infinite; }
+        
+        /* The "Glow" behind elements */
+        .glow-effect {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(76, 40, 137, 0.4) 0%, rgba(13, 17, 23, 0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(50px);
+        }
+    </style>
+</head>
+<body class="bg-deep-space text-gray-300 font-sans overflow-x-hidden selection:bg-neon-purple selection:text-white">
+
+    <nav class="flex justify-between items-center py-6 px-8 max-w-7xl mx-auto border-b border-border-dim/30 backdrop-blur-md sticky top-0 z-50 bg-deep-space/80">
+        <div class="text-xl font-bold tracking-tighter text-white">
+            TEMPORAL<span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-cyan">DSP</span>
+        </div>
+        <div class="hidden md:flex gap-6 text-sm font-medium">
+            <a href="#" class="hover:text-white transition-colors">Architecture</a>
+            <a href="#" class="hover:text-white transition-colors">Research</a>
+            <a href="#" class="text-neon-cyan hover:text-white transition-colors">Login</a>
+        </div>
+    </nav>
+
+    <main class="relative max-w-7xl mx-auto px-6 pt-20 pb-32">
+        
+
+
+<section class="max-w-4xl mx-auto px-6 py-12 text-gray-700 font-sans">
+    <h1 class="text-3xl font-bold mb-8 text-gray-900">Terms of Service</h1>
+    <p class="text-sm text-gray-500 mb-8">Effective Date: February 2026</p>
+
+    <div class="space-y-6">
+        <div>
+            <h2 class="text-xl font-semibold text-gray-900 mb-2">1. Agreement</h2>
+            <p>By purchasing or using software from <strong>TemporalDSP</strong> (operated by J. A. Ryan), you agree to these Terms of Service. If you do not agree, do not purchase or use the software.</p>
+        </div>
+
+        <div>
+            <h2 class="text-xl font-semibold text-gray-900 mb-2">2. License Grant</h2>
+            <p>We grant you a non-exclusive, non-transferable license to use the software for your personal or professional use. You may not resell, redistribute, or reverse-engineer the software.</p>
+        </div>
+
+        <div>
+            <h2 class="text-xl font-semibold text-gray-900 mb-2">3. Refunds and Cancellation</h2>
+            <p>We offer a 14-day refund policy for EU customers, provided the license key has not been activated or the software has not been substantially used. After activation, sales are generally final unless the software is proven defective.</p>
+        </div>
+
+        <div>
+            <h2 class="text-xl font-semibold text-gray-900 mb-2">4. Limitation of Liability</h2>
+            <p class="uppercase text-sm font-bold tracking-wide text-gray-600">Important:</p>
+            <p>The software is provided "AS IS", without warranty of any kind. In no event shall J. A. Ryan be liable for any claim, damages, or other liability arising from the use of the software. Our total liability is limited to the amount you paid for the software.</p>
+        </div>
+
+        <div>
+            <h2 class="text-xl font-semibold text-gray-900 mb-2">5. Governing Law</h2>
+            <p>These terms are governed by the laws of <strong>Ireland</strong>. Any disputes shall be resolved in the courts of Ireland.</p>
+        </div>
+        
+        <div>
+            <h2 class="text-xl font-semibold text-gray-900 mb-2">6. Contact Information</h2>
+            <p>Support: <a href="mailto:support@temporaldsp.com" class="text-blue-600 hover:underline">support@temporaldsp.com</a></p>
+        </div>
+    </div>
+</section>
+
+    </main>
+
+    <footer class="border-t border-border-dim/30 py-12 text-center text-sm text-gray-600 font-mono">
+    <p>&copy; 2026 TemporalDSP. <span class="opacity-75">Trading as J. A. Ryan.</span></p>
+    
+    <p class="mt-2 text-xs">
+        <a href="mailto:support@temporaldsp.com" class="hover:text-blue-500 transition-colors">Contact Support</a>
+    </p>
+
+    <p class="mt-2 text-xs opacity-50">• Ireland • Global Network</p>
+</footer>
+
+</body>
+</html>
