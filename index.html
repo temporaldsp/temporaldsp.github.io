@@ -85,7 +85,7 @@
             </h1>
             
             <p class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
-                High-performance audio utilities for the modern engineer. Built with Rust and Tauri for zero-latency precision and a lean system footprint.
+                High-performance audio utilities for the modern engineer. Built for low-latency precision and a lean system footprint.
             </p>
             
             <div class="flex flex-col md:flex-row gap-6 justify-center items-center">
@@ -98,39 +98,45 @@
             </div>
         </div>
 
-        <div id="products" class="grid md:grid-cols-3 gap-8">
-            
-            <div class="product-card p-10 rounded-3xl bg-card-bg border border-border-dim transition-all hover:-translate-y-2 group relative">
-                <div class="text-neon-cyan text-xs font-mono mb-4">PHASE 01 // FREE</div>
-                <h3 class="text-2xl font-bold text-white mb-4">Sub-Zero</h3>
-                <p class="text-gray-500 text-sm leading-relaxed mb-8">
-                    The surgical low-end cleaner. Mono your bass frequencies below the crossover point with zero phase shift.
-                </p>
-                <a href="#" class="text-sm font-bold text-neon-cyan group-hover:underline">Download Free →</a>
-            </div>
-
-            <div class="product-card p-10 rounded-3xl bg-card-bg border-2 border-neon-blue transition-all hover:-translate-y-2 group relative shadow-[0_0_40px_rgba(37,99,235,0.1)]">
-                <div class="text-neon-blue text-xs font-mono mb-4 font-bold">PHASE 02 // FLAGSHIP</div>
-                <h3 class="text-2xl font-bold text-white mb-4">IsoPrep</h3>
-                <p class="text-gray-400 text-sm leading-relaxed mb-8">
-                    Standalone gain-staging and saturation powerhouse. Prep your stems with neuro-adaptive algorithms before they hit the DAW.
-                </p>
-                <div class="flex justify-between items-center">
-                    <span class="text-white font-bold">$39.00</span>
-                    <a href="#" class="px-4 py-2 bg-neon-blue text-white rounded-lg text-xs font-bold hover:brightness-125 transition-all">Start 15-Day Trial</a>
-                </div>
-            </div>
-
-            <div class="product-card p-10 rounded-3xl bg-card-bg border border-border-dim transition-all hover:-translate-y-2 group relative">
-                <div class="text-gray-600 text-xs font-mono mb-4">PHASE 03 // COMING Q4</div>
-                <h3 class="text-2xl font-bold text-white mb-4">Temporal Tilt</h3>
-                <p class="text-gray-500 text-sm leading-relaxed mb-8">
-                    Mastering-grade tilt EQ. Transparent micro-moves restricted to +/- 3dB for tonal perfection.
-                </p>
-                <span class="text-gray-600 text-xs font-bold uppercase tracking-widest">In Development</span>
-            </div>
-
+    <div class="grid md:grid-cols-3 gap-8">
+    
+    <div class="p-8 rounded-2xl bg-card-bg border border-border-dim hover:border-neon-blue/40 transition-all group">
+        <div class="w-12 h-12 rounded-lg bg-neon-blue/10 flex items-center justify-center mb-6 text-neon-blue">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
         </div>
+        <h3 class="text-xl font-bold text-white mb-3">Engineered Stability</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">
+            Built using memory-safe architecture to ensure rock-solid performance during critical sessions. No memory leaks, no random hangs.
+        </p>
+    </div>
+
+    <div class="p-8 rounded-2xl bg-card-bg border border-border-dim hover:border-neon-cyan/40 transition-all group">
+        <div class="w-12 h-12 rounded-lg bg-neon-cyan/10 flex items-center justify-center mb-6 text-neon-cyan">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Minimal Footprint</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">
+            By utilizing native system resources, our utilities maintain an incredibly small disk and RAM footprint—leaving more power for your DAW.
+        </p>
+    </div>
+
+    <div class="p-8 rounded-2xl bg-card-bg border border-border-dim hover:border-neon-green/40 transition-all group">
+        <div class="w-12 h-12 rounded-lg bg-neon-green/10 flex items-center justify-center mb-6 text-neon-green">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-3">Signal Integrity</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">
+            Transparent processing designed to respect the source material. We focus on phase-coherent algorithms that sound natural.
+        </p>
+    </div>
+
+</div>
 
         <div id="licensing" class="mt-40 p-12 rounded-3xl border border-border-dim bg-gradient-to-b from-card-bg to-deep-space text-center max-w-5xl mx-auto">
             <h2 class="text-3xl font-bold text-white mb-6">Licensed for Professionals</h2>
