@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temporal DSP | Neuro-Auditory Intelligence</title>
+    <title>Temporal DSP | Professional Audio Workflow</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <script>
@@ -18,19 +17,14 @@
                         mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
-                        // The "Midnight" background from GitHub Dark Mode
                         'deep-space': '#0d1117',
                         'card-bg': '#161b22',
                         'border-dim': '#30363d',
-                        // The Accents from your image
-                        'neon-purple': '#db61a2',
-                        'neon-blue': '#4c2889', 
+                        // Replaced pink with a darker, punchier Neon Blue
+                        'neon-blue': '#2563eb', 
                         'neon-cyan': '#00f0ff',
+                        'neon-purple': '#4f46e5', // Deeper Indigo-Blue
                         'neon-green': '#3fb950',
-                    },
-                    backgroundImage: {
-                        'aurora': 'linear-gradient(135deg, #db61a2 0%, #4c2889 50%, #00f0ff 100%)',
-                        'glass': 'rgba(22, 27, 34, 0.7)',
                     }
                 }
             }
@@ -38,232 +32,148 @@
     </script>
 
     <style>
-        /* Custom Animations */
         @keyframes float {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0px); }
         }
         .float-slow { animation: float 6s ease-in-out infinite; }
-        .float-delayed { animation: float 6s ease-in-out 3s infinite; }
         
-        /* The "Glow" behind elements */
         .glow-effect {
             position: absolute;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(76, 40, 137, 0.4) 0%, rgba(13, 17, 23, 0) 70%);
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.2) 0%, rgba(13, 17, 23, 0) 70%);
             border-radius: 50%;
             z-index: -1;
-            filter: blur(50px);
+            filter: blur(60px);
+        }
+
+        .product-card:hover .glow-border {
+            opacity: 1;
         }
     </style>
 </head>
-<body class="bg-deep-space text-gray-300 font-sans overflow-x-hidden selection:bg-neon-purple selection:text-white">
+<body class="bg-deep-space text-gray-300 font-sans overflow-x-hidden selection:bg-neon-blue selection:text-white">
 
     <nav class="flex justify-between items-center py-6 px-8 max-w-7xl mx-auto border-b border-border-dim/30 backdrop-blur-md sticky top-0 z-50 bg-deep-space/80">
         <div class="text-xl font-bold tracking-tighter text-white">
-            TEMPORAL<span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-cyan">DSP</span>
+            TEMPORAL<span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-neon-cyan">DSP</span>
         </div>
-        <div class="hidden md:flex gap-6 text-sm font-medium">
-            <a href="#" class="hover:text-white transition-colors">Architecture</a>
-            <a href="#" class="hover:text-white transition-colors">Research</a>
-            <a href="#" class="text-neon-cyan hover:text-white transition-colors">Login</a>
+        <div class="hidden md:flex gap-8 text-sm font-medium">
+            <a href="#products" class="hover:text-white transition-colors">Products</a>
+            <a href="#licensing" class="hover:text-white transition-colors">Licensing</a>
+            <a href="https://github.com/temporaldsp" class="hover:text-white transition-colors">Open Source</a>
+            <a href="#" class="text-neon-cyan hover:brightness-125 transition-all">Account</a>
         </div>
     </nav>
 
     <main class="relative max-w-7xl mx-auto px-6 pt-20 pb-32">
-        
-        <div class="glow-effect top-20 left-1/4"></div>
-        <div class="glow-effect bottom-20 right-1/4 bg-blue-500/20"></div>
+        <div class="glow-effect top-0 left-1/4"></div>
+        <div class="glow-effect bottom-0 right-1/4"></div>
 
-        <div class="text-center max-w-4xl mx-auto mb-24">
-            <div class="inline-block mb-4 px-3 py-1 rounded-full border border-neon-purple/30 bg-neon-purple/10 text-neon-purple text-xs font-mono font-bold tracking-wider">
-                V1.0.0 INITIALIZATION
+        <div class="text-center max-w-4xl mx-auto mb-32">
+            <div class="inline-block mb-4 px-4 py-1 rounded-full border border-neon-blue/30 bg-neon-blue/10 text-neon-cyan text-xs font-mono font-bold tracking-widest uppercase">
+                2026 Roadmap Active
             </div>
             
-            <h1 class="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-6 leading-tight">
-                Neuro-Auditory <br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple via-blue-500 to-neon-cyan">
-                    Signal Intelligence
+            <h1 class="text-6xl md:text-8xl font-extrabold text-white tracking-tighter mb-8 leading-[0.9]">
+                Master Your Workflow <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue via-neon-cyan to-white">
+                    Before You Mix
                 </span>
             </h1>
             
-            <p class="text-lg text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-                A high-performance audio analysis framework built on <span class="text-white font-medium">Rust</span> and <span class="text-white font-medium">Tauri</span>. 
-                Designed for precision, speed, and zero-latency deployment.
+            <p class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+                High-performance audio utilities for the modern engineer. Built with Rust and Tauri for zero-latency precision and a lean system footprint.
             </p>
             
-            <div class="flex flex-col md:flex-row gap-4 justify-center">
-                <a href="#" class="px-8 py-4 rounded-lg bg-white text-deep-space font-bold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.3)]">
-                    Explore Documentation
+            <div class="flex flex-col md:flex-row gap-6 justify-center items-center">
+                <a href="#products" class="w-full md:w-auto px-10 py-4 rounded-full bg-white text-deep-space font-bold hover:bg-neon-cyan transition-all transform hover:scale-105 shadow-[0_0_30px_rgba(0,240,255,0.2)]">
+                    View Product Trinity
                 </a>
-                <a href="https://github.com/temporaldsp" class="px-8 py-4 rounded-lg border border-border-dim hover:border-gray-500 bg-card-bg/50 backdrop-blur transition-all font-mono text-sm flex items-center justify-center gap-2 group">
-                    <span>github.com/temporaldsp</span>
-                    <svg class="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                <a href="#" class="w-full md:w-auto px-10 py-4 rounded-full border border-border-dim hover:border-neon-blue bg-card-bg/50 backdrop-blur transition-all font-bold text-white">
+                    Download Freebie: Sub-Zero
                 </a>
             </div>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-6">
+        <div id="products" class="grid md:grid-cols-3 gap-8">
             
-            <div class="p-8 rounded-2xl bg-card-bg border border-border-dim hover:border-neon-purple/50 transition-all hover:-translate-y-1 group relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-br from-neon-purple/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <div class="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center mb-6 text-2xl group-hover:scale-110 transition-transform text-white">
-                    ⚡
-                </div>
-                <h3 class="text-xl font-bold text-white mb-3">Rust Core</h3>
-                <p class="text-gray-500 text-sm leading-relaxed">
-                    Built on the safety and concurrency of Rust. Memory-safe signal processing without the overhead of garbage collection.
+            <div class="product-card p-10 rounded-3xl bg-card-bg border border-border-dim transition-all hover:-translate-y-2 group relative">
+                <div class="text-neon-cyan text-xs font-mono mb-4">PHASE 01 // FREE</div>
+                <h3 class="text-2xl font-bold text-white mb-4">Sub-Zero</h3>
+                <p class="text-gray-500 text-sm leading-relaxed mb-8">
+                    The surgical low-end cleaner. Mono your bass frequencies below the crossover point with zero phase shift.
                 </p>
+                <a href="#" class="text-sm font-bold text-neon-cyan group-hover:underline">Download Free →</a>
             </div>
 
-            <div class="p-8 rounded-2xl bg-card-bg border border-border-dim hover:border-neon-cyan/50 transition-all hover:-translate-y-1 group relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-br from-neon-cyan/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <div class="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center mb-6 text-2xl group-hover:scale-110 transition-transform text-white">
-                    🛡️
-                </div>
-                <h3 class="text-xl font-bold text-white mb-3">Tauri Architecture</h3>
-                <p class="text-gray-500 text-sm leading-relaxed">
-                    Lean, secure binaries. We utilize the OS's native web renderer to keep application size under 5MB.
+            <div class="product-card p-10 rounded-3xl bg-card-bg border-2 border-neon-blue transition-all hover:-translate-y-2 group relative shadow-[0_0_40px_rgba(37,99,235,0.1)]">
+                <div class="text-neon-blue text-xs font-mono mb-4 font-bold">PHASE 02 // FLAGSHIP</div>
+                <h3 class="text-2xl font-bold text-white mb-4">IsoPrep</h3>
+                <p class="text-gray-400 text-sm leading-relaxed mb-8">
+                    Standalone gain-staging and saturation powerhouse. Prep your stems with neuro-adaptive algorithms before they hit the DAW.
                 </p>
+                <div class="flex justify-between items-center">
+                    <span class="text-white font-bold">$39.00</span>
+                    <a href="#" class="px-4 py-2 bg-neon-blue text-white rounded-lg text-xs font-bold hover:brightness-125 transition-all">Start 15-Day Trial</a>
+                </div>
             </div>
 
-            <div class="p-8 rounded-2xl bg-card-bg border border-border-dim hover:border-neon-green/50 transition-all hover:-translate-y-1 group relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-br from-neon-green/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <div class="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center mb-6 text-2xl group-hover:scale-110 transition-transform text-white">
-                    🧠
-                </div>
-                <h3 class="text-xl font-bold text-white mb-3">Neuro-Adaptive</h3>
-                <p class="text-gray-500 text-sm leading-relaxed">
-                    Algorithms designed to mimic human auditory perception, reducing fatigue during long mixing sessions.
+            <div class="product-card p-10 rounded-3xl bg-card-bg border border-border-dim transition-all hover:-translate-y-2 group relative">
+                <div class="text-gray-600 text-xs font-mono mb-4">PHASE 03 // COMING Q4</div>
+                <h3 class="text-2xl font-bold text-white mb-4">Temporal Tilt</h3>
+                <p class="text-gray-500 text-sm leading-relaxed mb-8">
+                    Mastering-grade tilt EQ. Transparent micro-moves restricted to +/- 3dB for tonal perfection.
                 </p>
+                <span class="text-gray-600 text-xs font-bold uppercase tracking-widest">In Development</span>
             </div>
 
+        </div>
+
+        <div id="licensing" class="mt-40 p-12 rounded-3xl border border-border-dim bg-gradient-to-b from-card-bg to-deep-space text-center max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold text-white mb-6">Licensed for Professionals</h2>
+            <p class="text-gray-400 max-w-2xl mx-auto mb-8">
+                No dongles. No background services. Our "Quiet-IO" Perpetual Licensing means once verified, our tools stay offline and out of your way. 100% privacy-focused.
+            </p>
+            <div class="flex flex-wrap justify-center gap-12 opacity-50 grayscale hover:grayscale-0 transition-all">
+                <span class="font-mono text-xs tracking-tighter">HARDWARE ANCHORING</span>
+                <span class="font-mono text-xs tracking-tighter">ZERO BACKGROUND I/O</span>
+                <span class="font-mono text-xs tracking-tighter">OFFLINE FOREVER</span>
+            </div>
         </div>
 
     </main>
 
-    <footer class="border-t border-border-dim/30 py-12 text-center text-sm text-gray-600 font-mono">
-        <p>&copy; 2026 TemporalDSP. <span class="opacity-75">Trading as J. A. Ryan.</span></p>
+    <footer class="border-t border-border-dim/30 py-16 text-center text-sm text-gray-600 font-mono">
+        <div class="mb-8">
+            <div class="text-white font-bold mb-2">TEMPORALDSP</div>
+            <p class="opacity-50">Precision Audio Engineering • Ireland</p>
+        </div>
         
-        <nav class="mt-4 space-x-4 text-xs">
-            <a href="/privacy-policy" class="hover:text-blue-500 transition-colors">Privacy</a>
-            <span class="opacity-30">|</span>
-            <a href="/terms-of-service" class="hover:text-blue-500 transition-colors">Terms</a>
-            <span class="opacity-30">|</span>
-            <a href="/support" class="hover:text-blue-500 transition-colors">Support</a>
+        <nav class="mb-8 space-x-6 text-xs uppercase tracking-widest">
+            <a href="#" class="hover:text-neon-cyan">Privacy</a>
+            <a href="#" class="hover:text-neon-cyan">Terms</a>
+            <a href="#" class="hover:text-neon-cyan">Support</a>
         </nav>
 
-        <p class="mt-4 text-xs">
-            <a href="mailto:support@temporaldsp.com" class="hover:text-blue-500 transition-colors">support@temporaldsp.com</a>
-        </p>
-
-        <p class="mt-2 text-xs opacity-50">• Ireland • Global Network</p>
+        <p class="text-[10px] opacity-30 uppercase tracking-[0.2em]">© 2026 TemporalDSP. Trading as J. A. Ryan.</p>
     </footer>
 
-    <div id="cookie-banner" style="display: none;">
-        <div class="cookie-content">
-            <p>
-                <strong>We value your privacy.</strong> We use cookies to ensure the security 
-                and reliability of our licensing services. 
-                <a href="/privacy-policy" target="_blank">Read our Privacy Policy.</a>
-            </p>
-            <div class="cookie-buttons">
-                <button id="cookie-deny" onclick="denyCookies()">Deny</button>
-                <button id="cookie-accept" onclick="acceptCookies()">Accept</button>
-            </div>
+    <div id="cookie-banner" class="fixed bottom-6 right-6 left-6 md:left-auto md:w-96 bg-card-bg border border-border-dim p-6 rounded-2xl shadow-2xl z-[100]" style="display: none;">
+        <p class="text-sm text-gray-300 mb-4 leading-relaxed">
+            We use secure cookies to verify your hardware license and ensure reliability.
+        </p>
+        <div class="flex gap-3">
+            <button onclick="acceptCookies()" class="flex-1 px-4 py-2 bg-white text-black text-xs font-bold rounded-lg hover:bg-neon-cyan transition-colors">Accept</button>
+            <button onclick="denyCookies()" class="px-4 py-2 border border-border-dim text-xs rounded-lg hover:bg-gray-800 transition-colors">Deny</button>
         </div>
     </div>
 
-    <style>
-        /* Dark Pro Audio Theme for Cookie Banner */
-        #cookie-banner {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #1a1a1a; /* Dark Grey */
-            border-top: 1px solid #333;
-            padding: 15px 20px;
-            z-index: 9999;
-            box-shadow: 0 -4px 10px rgba(0,0,0,0.5);
-            /* Updated font family to match your site's 'Inter' font */
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            color: #e0e0e0;
-            box-sizing: border-box;
-        }
-
-        .cookie-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .cookie-content p {
-            margin: 0;
-            font-size: 14px;
-            line-height: 1.5;
-            max-width: 800px;
-        }
-
-        .cookie-content a {
-            color: #4dabf7; /* Matching the blue from your footer/links */
-            text-decoration: none;
-            margin-left: 5px;
-        }
-        
-        .cookie-content a:hover {
-            text-decoration: underline;
-        }
-
-        .cookie-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        /* Buttons */
-        #cookie-accept {
-            background-color: #ffffff;
-            color: #000000;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-        }
-        
-        #cookie-accept:hover {
-            background-color: #f0f0f0;
-        }
-
-        #cookie-deny {
-            background-color: transparent;
-            color: #999;
-            border: 1px solid #555;
-            padding: 8px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: 0.2s;
-        }
-
-        #cookie-deny:hover {
-            border-color: #777;
-            color: #ccc;
-        }
-    </style>
-
     <script>
-        // Check if user has already decided
         window.addEventListener('load', function() {
-            const consent = localStorage.getItem('temporal_cookie_consent');
-            if (!consent) {
+            if (!localStorage.getItem('temporal_cookie_consent')) {
                 document.getElementById('cookie-banner').style.display = 'block';
             }
         });
@@ -271,14 +181,12 @@
         function acceptCookies() {
             localStorage.setItem('temporal_cookie_consent', 'accepted');
             document.getElementById('cookie-banner').style.display = 'none';
-            console.log("Cookies Accepted"); 
         }
 
         function denyCookies() {
             localStorage.setItem('temporal_cookie_consent', 'denied');
             document.getElementById('cookie-banner').style.display = 'none';
-            console.log("Cookies Denied");
         }
     </script>
-    </body>
+</body>
 </html>
