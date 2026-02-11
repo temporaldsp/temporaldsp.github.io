@@ -7,7 +7,7 @@
       "name": "IsoPrep Pro",
       "price": "€20",
       "stripe_url": "https://buy.stripe.com/test_4gM5kE9UEcchc2g9gK2cg01",
-      "image_url": "https://your-domain.com/assets/isoprep.png"
+      "image_url": "https://github.com/temporaldsp/temporaldsp.github.io/blob/main/chatgp_ai_logo_idea002.jpg"
     },
     {
       "id": "tilteq_pro",
@@ -15,7 +15,7 @@
       "name": "TiltEQ Pro",
       "price": "€30",
       "stripe_url": "https://buy.stripe.com/test_9B6bJ25Eodglfes1Oi2cg00",
-      "image_url": "https://your-domain.com/assets/tilteq.png"
+      "image_url": "https://github.com/temporaldsp/temporaldsp.github.io/blob/main/chatgp_ai_logo_idea002.jpg"
     }
   ]
 }
