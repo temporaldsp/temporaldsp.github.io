@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "products": [
+    {
+      "id": "isoprep_pro",
+      "sku": "temporaldsp_isoprep_pro",
+      "name": "IsoPrep Pro",
+      "price": "€20",
+      "stripe_url": "https://buy.stripe.com/test_isoprep",
+      "image_url": "https://your-domain.com/assets/isoprep.png"
+    },
+    {
+      "id": "tilteq_pro",
+      "sku": "temporaldsp_tilteq_pro",
+      "name": "TiltEQ Pro",
+      "price": "€30",
+      "stripe_url": "https://buy.stripe.com/test_tilteq",
+      "image_url": "https://your-domain.com/assets/tilteq.png"
+    }
+  ]
+}
