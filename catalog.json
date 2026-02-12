@@ -1,6 +1,22 @@
 {
-  "version": "2026-02-12T05:55:51.812Z",
+  "version": "2026-02-12T09:34:33.673Z",
   "products": [
+    {
+      "id": "prod_TxrrhT2xPRyvqZ",
+      "sku": " temporaldsp_oscillator_pro_full_license",
+      "name": "Temporladsp Temporal Oscillator (iOS & macOS)",
+      "price": "€4.99",
+      "stripe_url": "",
+      "image_url": "https://files.stripe.com/links/MDB8YWNjdF8xU3pkWEdLNEwzSThISFBQfGZsX3Rlc3RfeDdjb0w3TlFBOEF6R2N5dGZENVhxNXY3001Pyv6oVH"
+    },
+    {
+      "id": "prod_TxrnBLpnMgQflJ",
+      "sku": " temporaldsp_monomaker_sub_pro_full_license",
+      "name": "Temporaldsp Mono-Maker / Sub-Zero (The Freebie)",
+      "price": "€0.01",
+      "stripe_url": "",
+      "image_url": "https://files.stripe.com/links/MDB8YWNjdF8xU3pkWEdLNEwzSThISFBQfGZsX3Rlc3Rfa3dJc3NwaEU0RUJSWmdjaDlvWktXMXFk00CNKjdNjg"
+    },
     {
       "id": "prod_TxaiobJkLoRyoI",
       "sku": "temporaldsp_tilteq_pro_full_license",
