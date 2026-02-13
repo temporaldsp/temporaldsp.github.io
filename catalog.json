@@ -1,5 +1,5 @@
 {
-  "version": "2026-02-13T13:27:12.610Z",
+  "version": "2026-02-13T22:16:26.886Z",
   "products": [
     {
       "id": "prod_TxrrhT2xPRyvqZ",
@@ -13,7 +13,7 @@
       "id": "prod_TxrnBLpnMgQflJ",
       "sku": " temporaldsp_monomaker_sub_pro_full_license",
       "name": "Temporaldsp Mono-Maker / Sub-Zero (The Freebie)",
-      "price": "€0.01",
+      "price": "€10.00",
       "stripe_url": "",
       "image_url": "https://files.stripe.com/links/MDB8YWNjdF8xU3pkWEdLNEwzSThISFBQfGZsX3Rlc3Rfa3dJc3NwaEU0RUJSWmdjaDlvWktXMXFk00CNKjdNjg"
     },
