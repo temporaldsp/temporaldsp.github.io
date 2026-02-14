@@ -1,5 +1,5 @@
 {
-  "version": "2026-02-14T05:32:38.693Z",
+  "version": "2026-02-14T10:06:54.966Z",
   "products": [
     {
       "id": "prod_TxrrhT2xPRyvqZ",
@@ -24,14 +24,6 @@
       "price": "€30.00",
       "stripe_url": "https://buy.stripe.com/test_7sY6oI5Eogsx1nC78C2cg05",
       "image_url": "https://files.stripe.com/links/MDB8YWNjdF8xU3pkWEdLNEwzSThISFBQfGZsX3Rlc3RfTXRRTEVwM2RoUVRJaFEyaHdvVXVIRmZx00ZC9gpNfo"
-    },
-    {
-      "id": "prod_TxYjMkuPK4lP8M",
-      "sku": "temporaldsp_isoprep_pro_full_license",
-      "name": "Temporaldsp IsoPrep Pro Full License",
-      "price": "€20.00",
-      "stripe_url": "https://buy.stripe.com/test_7sY9AU8QAb8d4zO64y2cg07",
-      "image_url": "https://files.stripe.com/links/MDB8YWNjdF8xU3pkWEdLNEwzSThISFBQfGZsX3Rlc3RfTkhWN0xvTnVYaHJUdzlXak1vUFRKbW50008RALfKDP"
     }
   ]
 }
