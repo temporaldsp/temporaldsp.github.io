@@ -1,4 +1,23 @@
-<script>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Purchase Successful | TemporalDSP</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 50px; background: #121212; color: white; }
+        .btn { background: #007bff; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>🎉 Success!</h1>
+    <p>Your license for <strong>IsoPrep Pro</strong> has been generated.</p>
+    <p>It is now bound to your hardware and your email.</p>
+    
+    <a href="temporaldsp://sync" class="btn">Return to App & Activate</a>
+
+    <p style="margin-top: 30px; font-size: 0.9em; color: #888;">
+        If the app doesn't open automatically, please open it manually and click <strong>"Sync Vault"</strong> in Settings.
+    </p>
+  <script>
   // Try to wake up the Tauri app automatically
   window.location.href = "temporaldsp://purchase-complete";
   
@@ -7,3 +26,8 @@
     document.getElementById('manual-btn').style.display = 'block';
   }, 5000);
 </script>
+
+</body>
+</html>
+
+
