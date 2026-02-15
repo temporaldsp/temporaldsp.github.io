@@ -1,0 +1,9 @@
+<script>
+  // Try to wake up the Tauri app automatically
+  window.location.href = "temporaldsp://purchase-complete";
+  
+  // After 5 seconds, if they are still on this page, show a manual button
+  setTimeout(() => {
+    document.getElementById('manual-btn').style.display = 'block';
+  }, 5000);
+</script>
