@@ -1,1 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog @ TemporalDSP </title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        // The "Midnight" background from GitHub Dark Mode
+                        'deep-space': '#0d1117',
+                        'card-bg': '#161b22',
+                        'border-dim': '#30363d',
+                        // The Accents from your image
+                        'neon-purple': '#db61a2',
+                        'neon-blue': '#4c2889', 
+                        'neon-cyan': '#00f0ff',
+                        'neon-green': '#3fb950',
+                    },
+                    backgroundImage: {
+                        'aurora': 'linear-gradient(135deg, #db61a2 0%, #4c2889 50%, #00f0ff 100%)',
+                        'glass': 'rgba(22, 27, 34, 0.7)',
+                    }
+                }
+            }
+        }
+    </script>
 
+    <style>
+        /* Custom Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-slow { animation: float 6s ease-in-out infinite; }
+        .float-delayed { animation: float 6s ease-in-out 3s infinite; }
+        
+        /* The "Glow" behind elements */
+        .glow-effect {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(76, 40, 137, 0.4) 0%, rgba(13, 17, 23, 0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(50px);
+        }
+    </style>
+</head>
+<body class="bg-deep-space text-gray-300 font-sans overflow-x-hidden selection:bg-neon-purple selection:text-white">
+
+    <nav class="flex justify-between items-center py-6 px-8 max-w-7xl mx-auto border-b border-border-dim/30 backdrop-blur-md sticky top-0 z-50 bg-deep-space/80">
+        <div class="text-xl font-bold tracking-tighter text-white">
+            TEMPORAL<span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-cyan">DSP</span>
+        </div>
+        <div class="hidden md:flex gap-6 text-sm font-medium">
+            <a href="#" class="hover:text-white transition-colors">Architecture</a>
+            <a href="#" class="hover:text-white transition-colors">Research</a>
+            <a href="#" class="text-neon-cyan hover:text-white transition-colors">Login</a>
+        </div>
+    </nav>
+
+    <main class="relative max-w-7xl mx-auto px-6 pt-20 pb-32">
+        
+
+
+ <section class="max-w-3xl mx-auto px-6 py-12">
+/// Blog Section here 
+</section>
+
+    </main>
+
+    <footer class="border-t border-border-dim/30 py-12 text-center text-sm text-gray-600 font-mono">
+    <p>&copy; 2026 TemporalDSP. <span class="opacity-75">Trading as J. A. Ryan.</span></p>
+    
+    <nav class="mt-4 space-x-4 text-xs">
+        <a href="/privacy-policy" class="hover:text-blue-500 transition-colors">Privacy</a>
+        <span class="opacity-30">|</span>
+        <a href="/terms-of-service" class="hover:text-blue-500 transition-colors">Terms</a>
+        <span class="opacity-30">|</span>
+        <a href="/support" class="hover:text-blue-500 transition-colors">Support</a>
+    </nav>
+
+    <p class="mt-4 text-xs">
+        <a href="mailto:support@temporaldsp.com" class="hover:text-blue-500 transition-colors">support@temporaldsp.com</a>
+    </p>
+
+    <p class="mt-2 text-xs opacity-50">• Ireland • Global Network</p>
+</footer>
+
+</body>
+</html>
