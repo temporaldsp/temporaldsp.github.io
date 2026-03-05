@@ -1,72 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TemporalDSP | Secure Checkout</title>
+    <title>Checkout | TemporalDSP</title>
+    <!-- Load Stripe.js directly from Stripe -->
     <script src="https://js.stripe.com/v3/"></script>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 20px; background: #121212; color: white; margin: 0; }
-        #checkout { background: #ffffff; border-radius: 8px; padding: 10px; max-width: 600px; margin: 20px auto; min-height: 400px; }
-        .btn { color: #007bff; text-decoration: none; border: 1px solid #007bff; padding: 10px 20px; border-radius: 5px; display: inline-block; margin-top: 20px; transition: 0.3s; }
-        .btn:hover { background: #007bff; color: white; }
-        .loader { margin-top: 100px; font-style: italic; color: #888; }
-        .error-msg { color: #ff6b6b; margin-top: 50px; display: none; }
-    </style>
-</head>
-<body>
-    <h1>Checkout</h1>
-    <p>Secure payment powered by Stripe</p>
-
-    <div id="checkout">
-        <div class="loader" id="loading-text">Initializing secure session...</div>
-    </div>
-
-    <div id="error-container" class="error-msg">
-        <p>Invalid or expired checkout session. Please return to the app and try again.</p>
-    </div>
-
-    <br>
-    <a href="https://temporaldsp.com" class="btn">Back to Homepage</a>
-
-    <script>
-        // 3. Initialize the TESTING Checkout
-        const stripe = Stripe('pk_test_51SzdXGK4L3I8HHPPVtJh0ScfyuLL7DthU0U6th0P8VHUtRP3YC9T0zccFSN1C5AzdMh7FIcWb2IRucziSbIj9Ehj00K0I1uS7l'); 
-        
-        async function initialize() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const encodedPayload = urlParams.get('payload'); // Get the obfuscated string
-        
-            if (!encodedPayload) {
-                showError("Session missing.");
-                return;
-            }
-        
-            try {
-                // DECODE YOUR FORMAT HERE
-                // Example if using Base64:
-                const decodedString = atob(encodedPayload); 
-                const data = JSON.parse(decodedString); // email, machine_id, clientSecret
-        
-                const clientSecret = data.clientSecret;
-        
-                // Verify the secret is a real Stripe secret before proceeding
-                if (!clientSecret.startsWith('cs_')) {
-                    throw new Error("Invalid session data.");
-                }
-        
-                const checkout = await stripe.initEmbeddedCheckout({
-                    clientSecret: clientSecret,
-                });
-                checkout.mount('#checkout');
-                
-            } catch (e) {
-                console.error("Decoding/Stripe Error:", e);
-                document.getElementById('loading-text').innerText = "Security Handshake Failed.";
-            }
+        /* Modern minimalist boilerplate matching the TemporalDSP aesthetic */
+        :root {
+            --tdsp-blue: #00A3FF;
+            --tdsp-bg: #0d1117;
+            --tdsp-surface: #161b22;
+            --tdsp-text: #e6edf3;
         }
 
-        initialize();
+        body {
+            background-color: var(--tdsp-bg);
+            color: var(--tdsp-text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #checkout-container {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 24px;
+            color: var(--tdsp-blue);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        #checkout {
+            background: var(--tdsp-surface);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #error-message {
+            color: #FF5555;
+            text-align: center;
+            margin-top: 16px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="checkout-container">
+        <div class="header">
+            <div class="logo">TemporalDSP</div>
+        </div>
+
+        <!-- Stripe Embedded Checkout mounts here -->
+        <div id="checkout"></div>
+        <div id="error-message"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Extract the session secret from the URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const encodedSecret = urlParams.get('session_secret');
+            const errorMessageEl = document.getElementById('error-message');
+
+            if (!encodedSecret) {
+                errorMessageEl.textContent = "Secure Link Expired";
+                errorMessageEl.style.display = 'block';
+                return;
+            }
+
+            let sessionSecret;
+            try {
+                // Decode the obfuscated parameter
+                sessionSecret = atob(encodedSecret);
+
+                // Defensive Check: Sanitization
+                if (!sessionSecret.startsWith('cs_test_') && !sessionSecret.startsWith('cs_live_')) {
+                    throw new Error("Invalid Stripe Client Secret Prefix");
+                }
+            } catch (err) {
+                console.warn("[SECURITY] Failed to decrypt URL handshake payload.");
+                errorMessageEl.textContent = "Secure Link Expired";
+                errorMessageEl.style.display = 'block';
+                return;
+            }
+
+            try {
+                // Initialize Stripe inside checkout.html (Replace with dynamic PK if possible later or keep manual keys as per instructions)
+                // The architecture doc says: [User will provide pk_live_...]
+                // We'll use a placeholder that clearly needs replacement or a comment indicating it.
+                // Assuming it will be string-replaced or injected during deployment. Let's use 'pk_live_...' as a placeholder.
+                const stripe = Stripe('pk_test_51SzdXGK4L3I8HHPPVtJh0ScfyuLL7DthU0U6th0P8VHUtRP3YC9T0zccFSN1C5AzdMh7FIcWb2IRucziSbIj9Ehj00K0I1uS7l');
+
+                // Initialize Embedded Checkout
+                const fetchClientSecret = () => {
+                    return sessionSecret;
+                };
+
+                const checkout = await stripe.initEmbeddedCheckout({
+                    fetchClientSecret,
+                });
+
+                // Mount Checkout
+                checkout.mount('#checkout');
+
+            } catch (err) {
+                console.error("Stripe Checkout Initialization Failed", err);
+                errorMessageEl.textContent = "Error initializing checkout framework. Please try again.";
+                errorMessageEl.style.display = 'block';
+            }
+        });
     </script>
 </body>
+
 </html>
