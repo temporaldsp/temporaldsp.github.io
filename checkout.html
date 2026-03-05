@@ -33,31 +33,38 @@
         // 3. Initialize the TESTING Checkout
         const stripe = Stripe('pk_test_51SzdXGK4L3I8HHPPVtJh0ScfyuLL7DthU0U6th0P8VHUtRP3YC9T0zccFSN1C5AzdMh7FIcWb2IRucziSbIj9Ehj00K0I1uS7l'); 
         
-        async function initialize() {
-            // Get the secret from the URL: ?session_secret=cs_live_...
-            const urlParams = new URLSearchParams(window.location.search);
-            const clientSecret = urlParams.get('session_secret');
+async function initialize() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const encodedPayload = urlParams.get('payload'); // Get the obfuscated string
 
-            if (!clientSecret) {
-                document.getElementById('loading-text').style.display = 'none';
-                document.getElementById('error-container').style.display = 'block';
-                return;
-            }
+    if (!encodedPayload) {
+        showError("Session missing.");
+        return;
+    }
 
-            try {
-                // Initialize the embedded checkout
-                const checkout = await stripe.initEmbeddedCheckout({
-                    clientSecret,
-                });
+    try {
+        // DECODE YOUR FORMAT HERE
+        // Example if using Base64:
+        const decodedString = atob(encodedPayload); 
+        const data = JSON.parse(decodedString); // email, machine_id, clientSecret
 
-                // Mount it
-                checkout.mount('#checkout');
-                document.getElementById('loading-text').style.display = 'none';
-            } catch (e) {
-                console.error("Stripe Initialization Error:", e);
-                document.getElementById('loading-text').innerText = "Failed to load checkout.";
-            }
+        const clientSecret = data.clientSecret;
+
+        // Verify the secret is a real Stripe secret before proceeding
+        if (!clientSecret.startsWith('cs_')) {
+            throw new Error("Invalid session data.");
         }
+
+        const checkout = await stripe.initEmbeddedCheckout({
+            clientSecret: clientSecret,
+        });
+        checkout.mount('#checkout');
+        
+    } catch (e) {
+        console.error("Decoding/Stripe Error:", e);
+        document.getElementById('loading-text').innerText = "Security Handshake Failed.";
+    }
+}
 
         initialize();
     </script>
