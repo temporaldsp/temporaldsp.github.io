@@ -55,18 +55,6 @@
             display: none;
         }
     </style>
-</head>
-
-<body>
-    <div id="checkout-container">
-        <div class="logo">TEMPORALDSP</div>
-        <div id="error-message" class="error-message"></div>
-        <div id="turnstile-widget" class="cf-turnstile" data-sitekey="0x4AAAAAACmUfuuC16NuxW17" data-theme="dark"></div>
-        <div id="checkout">
-            <p style="text-align: center; color: #888;">Initializing secure vault...</p>
-        </div>
-    </div>
-
     <script>
         async function onTurnstileSuccess(token) {
             console.log("[SECURITY] Turnstile Handshake Verified (Web)");
@@ -118,13 +106,20 @@
                 return;
             }
         }
-
-        // Add the callback to the Turnstile widget
-        window.onload = function () {
-            const turnstileWidget = document.getElementById('turnstile-widget');
-            turnstileWidget.setAttribute('data-callback', 'onTurnstileSuccess');
-        };
     </script>
+</head>
+
+<body>
+    <div id="checkout-container">
+        <div class="logo">TEMPORALDSP</div>
+        <div id="error-message" class="error-message"></div>
+        <div id="turnstile-widget" class="cf-turnstile" data-sitekey="0x4AAAAAACmUfuuC16NuxW17" data-theme="dark"
+            data-callback="onTurnstileSuccess"></div>
+        <div id="checkout">
+            <p style="text-align: center; color: #888;">Initializing secure vault...</p>
+        </div>
+    </div>
+
 </body>
 
 </html>
