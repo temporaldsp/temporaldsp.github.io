@@ -79,59 +79,59 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            // Extract the session secret from the URL parameters
+            // Extract the SID from the URL parameters
             const urlParams = new URLSearchParams(window.location.search);
-            const encodedSecret = urlParams.get('session_secret');
+            const sid = urlParams.get('sid');
             const errorMessageEl = document.getElementById('error-message');
 
-            if (!encodedSecret) {
-                errorMessageEl.textContent = "Secure Link Expired";
+            if (!sid) {
+                errorMessageEl.textContent = "Checkout session expired. Please return to the app.";
                 errorMessageEl.style.display = 'block';
                 return;
             }
 
             let sessionSecret;
             try {
-                // Decode the obfuscated parameter
-                sessionSecret = atob(encodedSecret);
+                // Fetch the actual client secret from the Worker Opaque Vault
+                // BASE URL: https://stripe-licensing-worker.fabric-temporaldsp.workers.dev
+                const response = await fetch(`https://stripe-licensing-worker.fabric-temporaldsp.workers.dev/api/get-session?sid=${sid}`);
 
-                // Defensive Check: Sanitization
-                if (!sessionSecret.startsWith('cs_test_') && !sessionSecret.startsWith('cs_live_')) {
-                    throw new Error("Invalid Stripe Client Secret Prefix");
+                if (!response.ok) {
+                    if (response.status === 410 || response.status === 404) {
+                        throw new Error("Checkout session expired. Please return to the app.");
+                    }
+                    throw new Error("Security handshake failed. Please try again.");
                 }
+
+                const data = await response.json();
+                sessionSecret = data.client_secret;
+
+                if (!sessionSecret || (!sessionSecret.startsWith('cs_test_') && !sessionSecret.startsWith('cs_live_'))) {
+                    throw new Error("Invalid session data received.");
+                }
+
             } catch (err) {
-                console.warn("[SECURITY] Failed to decrypt URL handshake payload.");
-                errorMessageEl.textContent = "Secure Link Expired";
+                console.warn("[SECURITY] Opaque Vault handshake failed:", err.message);
+                errorMessageEl.textContent = err.message || "Checkout session expired. Please return to the app.";
                 errorMessageEl.style.display = 'block';
                 return;
             }
 
+            // Initialize Stripe with the provided public key
+            const stripe = Stripe('pk_test_51SzdXGK4L3I8HHPPVtJh0ScfyuLL7DthU0U6th0P8VHUtRP3YC9T0zccFSN1C5AzdMh7FIcWb2IRucziSbIj9Ehj00K0I1uS7l');
+
             try {
-                // Initialize Stripe inside checkout.html (Replace with dynamic PK if possible later or keep manual keys as per instructions)
-                // The architecture doc says: [User will provide pk_live_...]
-                // We'll use a placeholder that clearly needs replacement or a comment indicating it.
-                // Assuming it will be string-replaced or injected during deployment. Let's use 'pk_live_...' as a placeholder.
-                const stripe = Stripe('pk_test_51SzdXGK4L3I8HHPPVtJh0ScfyuLL7DthU0U6th0P8VHUtRP3YC9T0zccFSN1C5AzdMh7FIcWb2IRucziSbIj9Ehj00K0I1uS7l');
-
-                // Initialize Embedded Checkout
-                const fetchClientSecret = () => {
-                    return sessionSecret;
-                };
-
                 const checkout = await stripe.initEmbeddedCheckout({
-                    fetchClientSecret,
+                    clientSecret: sessionSecret,
                 });
 
                 // Mount Checkout
                 checkout.mount('#checkout');
-
-            } catch (err) {
-                console.error("Stripe Checkout Initialization Failed", err);
-                errorMessageEl.textContent = "Error initializing checkout framework. Please try again.";
+            } catch (mountErr) {
+                console.error("Stripe Initialization Error:", mountErr);
+                errorMessageEl.textContent = "Failed to load checkout element. Please check your connection.";
                 errorMessageEl.style.display = 'block';
             }
         });
     </script>
 </body>
-
-</html>
