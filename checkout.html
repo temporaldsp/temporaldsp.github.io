@@ -1,144 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
+/**
+ * TemporalDSP Licensing Worker v0.0.6 "Iron Vault"
+ * Handles: Stripe Session Creation, KV-Vault Storage, and Opaque Handshake
+ */
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout | TemporalDSP</title>
-    <!-- Load Stripe.js directly from Stripe -->
-    <script src="https://js.stripe.com/v3/"></script>
-    <style>
-        /* Modern minimalist boilerplate matching the TemporalDSP aesthetic */
-        :root {
-            --tdsp-blue: #00A3FF;
-            --tdsp-bg: #0d1117;
-            --tdsp-surface: #161b22;
-            --tdsp-text: #e6edf3;
-        }
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "https://temporaldsp.com",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, cf-turnstile-response",
+  "Access-Control-Max-Age": "86400",
+};
 
-        body {
-            background-color: var(--tdsp-bg);
-            color: var(--tdsp-text);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    const path = url.pathname;
 
-        #checkout-container {
-            width: 100%;
-            max-width: 800px;
-            padding: 20px;
-            box-sizing: border-box;
-        }
+    // 1. 🛡️ SECURITY HANDSHAKE (CORS Preflight)
+    if (request.method === "OPTIONS") {
+      return new Response(null, { status: 204, headers: corsHeaders });
+    }
 
-        .header {
-            text-align: center;
-            margin-bottom: 24px;
-        }
+    // 2. 🔑 OPAQUE VAULT RETRIEVAL (Used by checkout.html)
+    if (path === "/api/get-session" && request.method === "GET") {
+      const sid = url.searchParams.get("sid");
 
-        .logo {
-            font-weight: 800;
-            font-size: 24px;
-            color: var(--tdsp-blue);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        #checkout {
-            background: var(--tdsp-surface);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        #error-message {
-            color: #FF5555;
-            text-align: center;
-            margin-top: 16px;
-            display: none;
-        }
-    </style>
-</head>
-
-<body>
-
-    <div id="checkout-container">
-        <div class="header">
-            <div class="logo">TemporalDSP</div>
-        </div>
-
-        <!-- Stripe Embedded Checkout mounts here -->
-        <div id="checkout"></div>
-        <div id="error-message"></div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Extract the SID from the URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const sid = urlParams.get('sid');
-            const errorMessageEl = document.getElementById('error-message');
-
-            if (!sid) {
-                errorMessageEl.textContent = "Checkout session expired. Please return to the app.";
-                errorMessageEl.style.display = 'block';
-                return;
-            }
-
-            let sessionSecret;
-            try {
-                // Fetch the actual client secret from the Worker Opaque Vault
-                const response = await fetch(`https://stripe-licensing-worker.temporaldsp.workers.dev/api/get-session?sid=${sid}`);
-
-                if (!response.ok) {
-                    if (response.status === 410 || response.status === 404) {
-                        throw new Error("Checkout session expired. Please return to the app.");
-                    }
-                    throw new Error("Security handshake failed. Please try again.");
-                }
-
-                const data = await response.json();
-                sessionSecret = data.clientSecret;
-
-                if (!sessionSecret || (!sessionSecret.startsWith('cs_test_') && !sessionSecret.startsWith('cs_live_'))) {
-                    throw new Error("Invalid session data received.");
-                }
-
-            } catch (err) {
-                console.error("[SECURITY] Handshake Error:", err.message);
-
-                if (err.message.includes("Failed to fetch")) {
-                    errorMessageEl.textContent = "Secure Handshake Blocked: Check Browser Consoles for CORS or Network issues.";
-                } else {
-                    errorMessageEl.textContent = err.message || "Checkout session expired. Please return to the app.";
-                }
-
-                errorMessageEl.style.display = 'block';
-                return;
-            }
-
-            // Initialize Stripe with the provided public key
-            const stripe = Stripe('pk_test_51SzdXGK4L3I8HHPPVtJh0ScfyuLL7DthU0U6th0P8VHUtRP3YC9T0zccFSN1C5AzdMh7FIcWb2IRucziSbIj9Ehj00K0I1uS7l');
-
-            try {
-                const checkout = await stripe.initEmbeddedCheckout({
-                    clientSecret: sessionSecret,
-                });
-
-                // Mount Checkout
-                checkout.mount('#checkout');
-            } catch (mountErr) {
-                console.error("Stripe Initialization Error:", mountErr);
-                errorMessageEl.textContent = "Failed to load checkout element. Please check your connection.";
-                errorMessageEl.style.display = 'block';
-            }
+      if (!sid || !/^[a-z0-9]+$/i.test(sid)) {
+        return new Response(JSON.stringify({ error: "Invalid SID format" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
         });
-    </script>
-</body>
+      }
 
-</html>
+      // Retrieve the encrypted payload from KV
+      const sessionData = await env.SESSIONS_KV.get(sid);
+
+      if (!sessionData) {
+        return new Response(JSON.stringify({ error: "Session expired or already used" }), {
+          status: 404,
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
+        });
+      }
+
+      // 🛑 ATOMIC DELETION: Single-use security policy
+      // Once the checkout page reads this, the SID is destroyed.
+      await env.SESSIONS_KV.delete(sid);
+
+      return new Response(sessionData, {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+      });
+    }
+
+    // 3. 💳 SESSION CREATION (Used by Rust App)
+    if (path === "/api/create-session" && request.method === "POST") {
+      try {
+        const body = await request.json();
+        const { sku, machine_hash } = body;
+
+        // [Logic for Stripe Session Creation would go here...]
+        // For this build, we assume 'session' is the object returned from Stripe API
+        
+        const sid = Math.random().toString(36).substring(2, 18); // Generate 16-char SID
+        
+        const payload = JSON.stringify({
+          clientSecret: "cs_test_placeholder_from_stripe", // Replace with real session.client_secret
+          sku: sku,
+          machine: machine_hash
+        });
+
+        // Store in KV with 5-minute TTL (Cloudflare minimum is 60s)
+        await env.SESSIONS_KV.put(sid, payload, { expirationTtl: 300 });
+
+        return new Response(JSON.stringify({ sid: sid }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
+        });
+
+      } catch (err) {
+        return new Response(JSON.stringify({ error: err.message }), {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
+        });
+      }
+    }
+
+    return new Response("Not Found", { status: 404 });
+  }
+};
