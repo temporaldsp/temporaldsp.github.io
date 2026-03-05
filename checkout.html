@@ -104,15 +104,21 @@
                 }
 
                 const data = await response.json();
-                sessionSecret = data.client_secret;
+                sessionSecret = data.clientSecret;
 
                 if (!sessionSecret || (!sessionSecret.startsWith('cs_test_') && !sessionSecret.startsWith('cs_live_'))) {
                     throw new Error("Invalid session data received.");
                 }
 
             } catch (err) {
-                console.warn("[SECURITY] Opaque Vault handshake failed:", err.message);
-                errorMessageEl.textContent = err.message || "Checkout session expired. Please return to the app.";
+                console.error("[SECURITY] Handshake Error:", err.message);
+
+                if (err.message.includes("Failed to fetch")) {
+                    errorMessageEl.textContent = "Secure Handshake Blocked: Check Browser Consoles for CORS or Network issues.";
+                } else {
+                    errorMessageEl.textContent = err.message || "Checkout session expired. Please return to the app.";
+                }
+
                 errorMessageEl.style.display = 'block';
                 return;
             }
@@ -135,3 +141,5 @@
         });
     </script>
 </body>
+
+</html>
