@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
             --tdsp-surface: #161b22;
             --tdsp-text: #e6edf3;
         }
+
         body {
             background-color: var(--tdsp-bg);
             color: var(--tdsp-text);
@@ -22,12 +24,14 @@
             min-height: 100vh;
             margin: 0;
         }
+
         #checkout-container {
             width: 100%;
             max-width: 600px;
             padding: 20px;
             box-sizing: border-box;
         }
+
         .logo {
             text-align: center;
             font-weight: 800;
@@ -36,14 +40,16 @@
             margin-bottom: 24px;
             text-transform: uppercase;
         }
+
         #checkout {
             background: var(--tdsp-surface);
             border-radius: 12px;
             padding: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             min-height: 500px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
+
         #error-message {
             color: #FF5555;
             text-align: center;
@@ -55,9 +61,10 @@
         }
     </style>
 </head>
+
 <body>
     <div id="checkout-container">
-        <div class="logo">TEMPORALDSP</div>
+        <div class="logo">TEMPORALDSP v0.1.1</div>
         <div id="checkout">
             <p style="text-align: center; color: #888; margin-top: 100px;">Initializing secure vault...</p>
         </div>
@@ -86,16 +93,16 @@
 
             try {
                 console.log("[VAULT] Initiating Invisible Handshake...");
-                
+
                 const response = await fetch(`https://stripe-licensing-worker.temporaldsp.workers.dev/api/get-session?sid=${sid}`);
-                
+
                 if (!response.ok) {
                     const errorData = await response.json();
                     throw new Error(errorData.error || "Session expired.");
                 }
 
                 const data = await response.json();
-                
+
                 if (data.clientSecret) {
                     await mountStripe(data.clientSecret);
                 } else {
@@ -123,7 +130,7 @@
                 const checkout = await stripe.initEmbeddedCheckout({ clientSecret });
 
                 // Clear the loading text right before mounting
-                checkoutEl.innerHTML = ''; 
+                checkoutEl.innerHTML = '';
                 checkout.mount('#checkout');
             } catch (err) {
                 isStripeMounted = false;
@@ -139,4 +146,5 @@
         });
     </script>
 </body>
+
 </html>
