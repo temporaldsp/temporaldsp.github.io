@@ -123,3 +123,149 @@
 </body>
 
 </html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout | TemporalDSP</title>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        :root {
+            --tdsp-blue: #00A3FF;
+            --tdsp-bg: #0d1117;
+            --tdsp-surface: #161b22;
+            --tdsp-text: #e6edf3;
+        }
+
+        body {
+            background-color: var(--tdsp-bg);
+            color: var(--tdsp-text);
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        #checkout-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .logo {
+            text-align: center;
+            font-weight: 800;
+            color: var(--tdsp-blue);
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        #checkout {
+            background: var(--tdsp-surface);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-height: 400px;
+        }
+
+        #error-message {
+            color: #FF5555;
+            text-align: center;
+            margin-top: 16px;
+            display: none;
+        }
+    </style>
+    <script>
+        let vaultInitialized = false;
+
+        async function initializeStripe(sessionSecret) {
+            if (vaultInitialized) return;
+            vaultInitialized = true;
+
+            const checkoutEl = document.getElementById('checkout');
+            console.log("[VAULT] Mounting Stripe Engine...");
+
+            try {
+                const stripe = Stripe('pk_test_51SzdXGK4L3I8HHPPVtJh0ScfyuLL7DthU0U6th0P8VHUtRP3YC9T0zccFSN1C5AzdMh7FIcWb2IRucziSbIj9Ehj00K0I1uS7l');
+                const checkout = await stripe.initEmbeddedCheckout({ clientSecret: sessionSecret });
+
+                checkoutEl.innerHTML = ''; // Clear loader
+                checkout.mount('#checkout');
+            } catch (err) {
+                console.error("[VAULT] Stripe Mount Error:", err);
+                document.getElementById('error-message').textContent = "Failed to load checkout portal. Please try again.";
+                document.getElementById('error-message').style.display = 'block';
+            }
+        }
+
+        async function onTurnstileSuccess(token) {
+            if (vaultInitialized) return;
+            console.log("[SECURITY] Turnstile Handshake Verified (Web)");
+            const sid = new URLSearchParams(window.location.search).get('sid');
+            const errorEl = document.getElementById('error-message');
+
+            if (!sid) {
+                errorEl.textContent = "Session missing. Please restart checkout in-app.";
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://stripe-licensing-worker.temporaldsp.workers.dev/api/get-session?sid=${sid}&token=${token}`);
+
+                if (!response.ok) {
+                    throw new Error("Security handshake failed. Please try again.");
+                }
+
+                const data = await response.json();
+                if (data.clientSecret) {
+                    initializeStripe(data.clientSecret);
+                }
+            } catch (err) {
+                console.error("[SECURITY] Handshake Error:", err.message);
+                errorEl.textContent = err.message;
+                errorEl.style.display = 'block';
+            }
+        }
+
+        // Fail-safe: If Turnstile is too slow, try to fetch with SKIP_FOR_DEV
+        setTimeout(async () => {
+            if (vaultInitialized) return;
+            console.warn("[SECURITY] Turnstile stall detected. Triggering fail-safe handshake...");
+            const sid = new URLSearchParams(window.location.search).get('sid');
+            if (!sid) return;
+
+            try {
+                const response = await fetch(`https://stripe-licensing-worker.temporaldsp.workers.dev/api/get-session?sid=${sid}&token=SKIP_FOR_DEV`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.clientSecret) {
+                        initializeStripe(data.clientSecret);
+                    }
+                }
+            } catch (err) {
+                console.error("[FAIL-SAFE] Handshake failed:", err.message);
+            }
+        }, 3500);
+    </script>
+</head>
+
+<body>
+    <div id="checkout-container">
+        <div class="logo">TEMPORALDSP</div>
+        <div id="error-message" class="error-message"></div>
+        <div id="turnstile-widget" class="cf-turnstile" data-sitekey="0x4AAAAAACmUfuuC16NuxW17" data-theme="dark"
+            data-callback="onTurnstileSuccess"></div>
+        <div id="checkout">
+            <p style="text-align: center; color: #888;">Initializing secure vault...</p>
+        </div>
+    </div>
+
+</body>
+
+</html>
