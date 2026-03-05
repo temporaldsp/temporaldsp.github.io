@@ -33,38 +33,38 @@
         // 3. Initialize the TESTING Checkout
         const stripe = Stripe('pk_test_51SzdXGK4L3I8HHPPVtJh0ScfyuLL7DthU0U6th0P8VHUtRP3YC9T0zccFSN1C5AzdMh7FIcWb2IRucziSbIj9Ehj00K0I1uS7l'); 
         
-async function initialize() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const encodedPayload = urlParams.get('payload'); // Get the obfuscated string
-
-    if (!encodedPayload) {
-        showError("Session missing.");
-        return;
-    }
-
-    try {
-        // DECODE YOUR FORMAT HERE
-        // Example if using Base64:
-        const decodedString = atob(encodedPayload); 
-        const data = JSON.parse(decodedString); // email, machine_id, clientSecret
-
-        const clientSecret = data.clientSecret;
-
-        // Verify the secret is a real Stripe secret before proceeding
-        if (!clientSecret.startsWith('cs_')) {
-            throw new Error("Invalid session data.");
-        }
-
-        const checkout = await stripe.initEmbeddedCheckout({
-            clientSecret: clientSecret,
-        });
-        checkout.mount('#checkout');
+        async function initialize() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const encodedPayload = urlParams.get('payload'); // Get the obfuscated string
         
-    } catch (e) {
-        console.error("Decoding/Stripe Error:", e);
-        document.getElementById('loading-text').innerText = "Security Handshake Failed.";
-    }
-}
+            if (!encodedPayload) {
+                showError("Session missing.");
+                return;
+            }
+        
+            try {
+                // DECODE YOUR FORMAT HERE
+                // Example if using Base64:
+                const decodedString = atob(encodedPayload); 
+                const data = JSON.parse(decodedString); // email, machine_id, clientSecret
+        
+                const clientSecret = data.clientSecret;
+        
+                // Verify the secret is a real Stripe secret before proceeding
+                if (!clientSecret.startsWith('cs_')) {
+                    throw new Error("Invalid session data.");
+                }
+        
+                const checkout = await stripe.initEmbeddedCheckout({
+                    clientSecret: clientSecret,
+                });
+                checkout.mount('#checkout');
+                
+            } catch (e) {
+                console.error("Decoding/Stripe Error:", e);
+                document.getElementById('loading-text').innerText = "Security Handshake Failed.";
+            }
+        }
 
         initialize();
     </script>
