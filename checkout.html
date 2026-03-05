@@ -45,7 +45,8 @@
             border-radius: 12px;
             padding: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            min-height: 400px;
+            min-height: 500px;
+            /* Defensive UI: Prevent 0-height iframe */
         }
 
         #error-message {
@@ -56,156 +57,15 @@
         }
     </style>
     <script>
-        async function onTurnstileSuccess(token) {
-            console.log("[SECURITY] Turnstile Handshake Verified (Web)");
-            const sid = new URLSearchParams(window.location.search).get('sid');
-            const errorEl = document.getElementById('error-message');
-            const checkoutEl = document.getElementById('checkout');
+        // --- GLOBAL STATE ---
+        let handshakeInitiated = false; // Prevents multiple network fetches
+        let isStripeMounted = false;    // Prevents multiple Stripe mounts
 
-            if (!sid) {
-                errorEl.textContent = "Session missing. Please restart checkout in-app.";
-                errorEl.style.display = 'block';
-                return;
-            }
+        async function performHandshake(token = null) {
+            // 🛡️ LOCK 1: Prevent multiple fetch attempts
+            if (handshakeInitiated || isStripeMounted) return;
+            handshakeInitiated = true;
 
-            try {
-                // Fetch the actual client secret from the Worker Opaque Vault
-                const response = await fetch(`https://stripe-licensing-worker.temporaldsp.workers.dev/api/get-session?sid=${sid}&token=${token}`);
-
-                if (!response.ok) {
-                    if (response.status === 410 || response.status === 404) {
-                        throw new Error("Checkout session expired. Please return to the app.");
-                    }
-                    if (response.status === 403) {
-                        throw new Error("Security challenge failed. Automated checkout blocked.");
-                    }
-                    throw new Error("Security handshake failed. Please try again.");
-                }
-
-                const data = await response.json();
-                const sessionSecret = data.clientSecret;
-
-                if (!sessionSecret || (!sessionSecret.startsWith('cs_test_') && !sessionSecret.startsWith('cs_live_'))) {
-                    throw new Error("Invalid session data received.");
-                }
-
-                // 2. Initialize Stripe
-                const stripe = Stripe('pk_test_51SzdXGK4L3I8HHPPVtJh0ScfyuLL7DthU0U6th0P8VHUtRP3YC9T0zccFSN1C5AzdMh7FIcWb2IRucziSbIj9Ehj00K0I1uS7l');
-                const checkout = await stripe.initEmbeddedCheckout({ clientSecret: sessionSecret });
-
-                // 3. Mount UI
-                checkoutEl.innerHTML = ''; // Clear loader
-                checkout.mount('#checkout');
-
-            } catch (err) {
-                console.error("[SECURITY] Handshake Error:", err.message);
-
-                errorEl.textContent = err.message || "Checkout session expired. Please return to the app.";
-                errorEl.style.display = 'block';
-                checkoutEl.innerHTML = '<p style="text-align: center; color: #FF5555;">Handshake Blocked</p>';
-                return;
-            }
-        }
-    </script>
-</head>
-
-<body>
-    <div id="checkout-container">
-        <div class="logo">TEMPORALDSP</div>
-        <div id="error-message" class="error-message"></div>
-        <div id="turnstile-widget" class="cf-turnstile" data-sitekey="0x4AAAAAACmUfuuC16NuxW17" data-theme="dark"
-            data-callback="onTurnstileSuccess"></div>
-        <div id="checkout">
-            <p style="text-align: center; color: #888;">Initializing secure vault...</p>
-        </div>
-    </div>
-
-</body>
-
-</html>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Checkout | TemporalDSP</title>
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    <script src="https://js.stripe.com/v3/"></script>
-    <style>
-        :root {
-            --tdsp-blue: #00A3FF;
-            --tdsp-bg: #0d1117;
-            --tdsp-surface: #161b22;
-            --tdsp-text: #e6edf3;
-        }
-
-        body {
-            background-color: var(--tdsp-bg);
-            color: var(--tdsp-text);
-            font-family: sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-
-        #checkout-container {
-            width: 100%;
-            max-width: 600px;
-            padding: 20px;
-        }
-
-        .logo {
-            text-align: center;
-            font-weight: 800;
-            color: var(--tdsp-blue);
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-        }
-
-        #checkout {
-            background: var(--tdsp-surface);
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            min-height: 400px;
-        }
-
-        #error-message {
-            color: #FF5555;
-            text-align: center;
-            margin-top: 16px;
-            display: none;
-        }
-    </style>
-    <script>
-        let vaultInitialized = false;
-
-        async function initializeStripe(sessionSecret) {
-            if (vaultInitialized) return;
-            vaultInitialized = true;
-
-            const checkoutEl = document.getElementById('checkout');
-            console.log("[VAULT] Mounting Stripe Engine...");
-
-            try {
-                const stripe = Stripe('pk_test_51SzdXGK4L3I8HHPPVtJh0ScfyuLL7DthU0U6th0P8VHUtRP3YC9T0zccFSN1C5AzdMh7FIcWb2IRucziSbIj9Ehj00K0I1uS7l');
-                const checkout = await stripe.initEmbeddedCheckout({ clientSecret: sessionSecret });
-
-                checkoutEl.innerHTML = ''; // Clear loader
-                checkout.mount('#checkout');
-            } catch (err) {
-                console.error("[VAULT] Stripe Mount Error:", err);
-                document.getElementById('error-message').textContent = "Failed to load checkout portal. Please try again.";
-                document.getElementById('error-message').style.display = 'block';
-            }
-        }
-
-        async function onTurnstileSuccess(token) {
-            if (vaultInitialized) return;
-            console.log("[SECURITY] Turnstile Handshake Verified (Web)");
             const sid = new URLSearchParams(window.location.search).get('sid');
             const errorEl = document.getElementById('error-message');
 
@@ -216,40 +76,63 @@
             }
 
             try {
-                const response = await fetch(`https://stripe-licensing-worker.temporaldsp.workers.dev/api/get-session?sid=${sid}&token=${token}`);
+                console.log(`[VAULT] Handshake starting (Token: ${token ? 'Turnstile' : 'Fail-safe'})`);
+
+                // Use the token if provided, otherwise fallback to skip (for dev)
+                const fetchUrl = `https://stripe-licensing-worker.temporaldsp.workers.dev/api/get-session?sid=${sid}&token=${token || 'SKIP_FOR_DEV'}`;
+
+                const response = await fetch(fetchUrl);
 
                 if (!response.ok) {
+                    handshakeInitiated = false; // Allow retry if it was a transient error
                     throw new Error("Security handshake failed. Please try again.");
                 }
 
                 const data = await response.json();
                 if (data.clientSecret) {
-                    initializeStripe(data.clientSecret);
+                    await initializeStripe(data.clientSecret);
                 }
             } catch (err) {
+                handshakeInitiated = false;
                 console.error("[SECURITY] Handshake Error:", err.message);
-                errorEl.textContent = err.message;
+                errorEl.textContent = "Handshake Error: " + err.message;
                 errorEl.style.display = 'block';
             }
         }
 
-        // Fail-safe: If Turnstile is too slow, try to fetch with SKIP_FOR_DEV
-        setTimeout(async () => {
-            if (vaultInitialized) return;
-            console.warn("[SECURITY] Turnstile stall detected. Triggering fail-safe handshake...");
-            const sid = new URLSearchParams(window.location.search).get('sid');
-            if (!sid) return;
+        async function initializeStripe(sessionSecret) {
+            // 🛡️ LOCK 2: Singleton Mount
+            if (isStripeMounted) return;
+            isStripeMounted = true;
+
+            console.log("[VAULT] Mounting Stripe Engine...");
+            const checkoutEl = document.getElementById('checkout');
 
             try {
-                const response = await fetch(`https://stripe-licensing-worker.temporaldsp.workers.dev/api/get-session?sid=${sid}&token=SKIP_FOR_DEV`);
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.clientSecret) {
-                        initializeStripe(data.clientSecret);
-                    }
-                }
+                const stripe = Stripe('pk_test_51SzdXGK4L3I8HHPPVtJh0ScfyuLL7DthU0U6th0P8VHUtRP3YC9T0zccFSN1C5AzdMh7FIcWb2IRucziSbIj9Ehj00K0I1uS7l');
+                const checkout = await stripe.initEmbeddedCheckout({ clientSecret: sessionSecret });
+
+                checkoutEl.innerHTML = ''; // Clear "Initializing..." text
+                checkout.mount('#checkout');
             } catch (err) {
-                console.error("[FAIL-SAFE] Handshake failed:", err.message);
+                isStripeMounted = false;
+                handshakeInitiated = false;
+                console.error("[VAULT] Stripe Mount Error:", err);
+            }
+        }
+
+        // --- CALLBACKS ---
+
+        function onTurnstileSuccess(token) {
+            console.log("[SECURITY] Turnstile Handshake Verified.");
+            performHandshake(token);
+        }
+
+        // Fail-safe: Triggered after 3.5s if Turnstile hasn't responded
+        setTimeout(() => {
+            if (!handshakeInitiated && !isStripeMounted) {
+                console.warn("[SECURITY] Fail-safe triggered.");
+                performHandshake(null);
             }
         }, 3500);
     </script>
