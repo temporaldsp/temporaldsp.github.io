@@ -93,8 +93,7 @@
             let sessionSecret;
             try {
                 // Fetch the actual client secret from the Worker Opaque Vault
-                // BASE URL: https://stripe-licensing-worker.fabric-temporaldsp.workers.dev
-                const response = await fetch(`https://stripe-licensing-worker.fabric-temporaldsp.workers.dev/api/get-session?sid=${sid}`);
+                const response = await fetch(`https://stripe-licensing-worker.temporaldsp.workers.dev/api/get-session?sid=${sid}`);
 
                 if (!response.ok) {
                     if (response.status === 410 || response.status === 404) {
