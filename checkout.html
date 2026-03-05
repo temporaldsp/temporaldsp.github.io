@@ -1,1 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TemporalDSP | Secure Checkout</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 20px; background: #121212; color: white; margin: 0; }
+        #checkout { background: #ffffff; border-radius: 8px; padding: 10px; max-width: 600px; margin: 20px auto; min-height: 400px; }
+        .btn { color: #007bff; text-decoration: none; border: 1px solid #007bff; padding: 10px 20px; border-radius: 5px; display: inline-block; margin-top: 20px; transition: 0.3s; }
+        .btn:hover { background: #007bff; color: white; }
+        .loader { margin-top: 100px; font-style: italic; color: #888; }
+        .error-msg { color: #ff6b6b; margin-top: 50px; display: none; }
+    </style>
+</head>
+<body>
+    <h1>Checkout</h1>
+    <p>Secure payment powered by Stripe</p>
 
+    <div id="checkout">
+        <div class="loader" id="loading-text">Initializing secure session...</div>
+    </div>
+
+    <div id="error-container" class="error-msg">
+        <p>Invalid or expired checkout session. Please return to the app and try again.</p>
+    </div>
+
+    <br>
+    <a href="https://temporaldsp.com" class="btn">Back to Homepage</a>
+
+    <script>
+        // 3. Initialize the TESTING Checkout
+        const stripe = Stripe('pk_test_51SzdXGK4L3I8HHPPVtJh0ScfyuLL7DthU0U6th0P8VHUtRP3YC9T0zccFSN1C5AzdMh7FIcWb2IRucziSbIj9Ehj00K0I1uS7l'); 
+        
+        async function initialize() {
+            // Get the secret from the URL: ?session_secret=cs_live_...
+            const urlParams = new URLSearchParams(window.location.search);
+            const clientSecret = urlParams.get('session_secret');
+
+            if (!clientSecret) {
+                document.getElementById('loading-text').style.display = 'none';
+                document.getElementById('error-container').style.display = 'block';
+                return;
+            }
+
+            try {
+                // Initialize the embedded checkout
+                const checkout = await stripe.initEmbeddedCheckout({
+                    clientSecret,
+                });
+
+                // Mount it
+                checkout.mount('#checkout');
+                document.getElementById('loading-text').style.display = 'none';
+            } catch (e) {
+                console.error("Stripe Initialization Error:", e);
+                document.getElementById('loading-text').innerText = "Failed to load checkout.";
+            }
+        }
+
+        initialize();
+    </script>
+</body>
+</html>
