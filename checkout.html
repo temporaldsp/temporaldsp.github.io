@@ -65,9 +65,15 @@
 <body>
     <div id="checkout-container">
         <div class="logo">TEMPORALDSP v0.1.2</div>
-        <div id="checkout">
-            <p style="text-align: center; color: #888; margin-top: 100px;">Initializing secure vault...</p>
+        
+        <!-- 1. Dedicated standalone loader -->
+        <div id="loading-text" style="text-align: center; color: #888; margin-top: 100px;">
+            <p>Initializing secure vault...</p>
         </div>
+
+        <!-- 2. Empty mounting point. DO NOT touch innerHTML of this div via JS -->
+        <div id="checkout"></div>
+        
         <div id="error-message"></div>
     </div>
 
@@ -83,9 +89,10 @@
 
             const sid = new URLSearchParams(window.location.search).get('sid');
             const errorEl = document.getElementById('error-message');
-            const checkoutEl = document.getElementById('checkout');
+            const loaderEl = document.getElementById('loading-text');
 
             if (!sid) {
+                loaderEl.style.display = 'none';
                 errorEl.textContent = "Checkout session missing. Please restart in the app.";
                 errorEl.style.display = 'block';
                 return;
@@ -112,9 +119,9 @@
             } catch (err) {
                 handshakeInitiated = false;
                 console.error("[VAULT] Handshake Error:", err.message);
+                loaderEl.style.display = 'none';
                 errorEl.textContent = err.message;
                 errorEl.style.display = 'block';
-                checkoutEl.innerHTML = '<p style="text-align:center; color:#555;">Could not open vault.</p>';
             }
         }
 
@@ -123,18 +130,20 @@
             isStripeMounted = true;
 
             console.log("[VAULT] Mounting Stripe Portal...");
-            const checkoutEl = document.getElementById('checkout');
-
+            
             try {
                 const stripe = Stripe('pk_test_51SzdXGK4L3I8HHPPVtJh0ScfyuLL7DthU0U6th0P8VHUtRP3YC9T0zccFSN1C5AzdMh7FIcWb2IRucziSbIj9Ehj00K0I1uS7l');
                 const checkout = await stripe.initEmbeddedCheckout({ clientSecret });
 
-                // Clear the loading text right before mounting
-                checkoutEl.innerHTML = '';
+                // Gently hide the loading text via CSS display, leaving DOM intact
+                document.getElementById('loading-text').style.display = 'none';
+                
+                // Mount into the pristine #checkout div
                 checkout.mount('#checkout');
             } catch (err) {
                 isStripeMounted = false;
                 console.error("[VAULT] Stripe Mount Error:", err);
+                document.getElementById('loading-text').style.display = 'none';
                 document.getElementById('error-message').textContent = "Stripe initialization failed.";
                 document.getElementById('error-message').style.display = 'block';
             }
@@ -146,5 +155,6 @@
         });
     </script>
 </body>
+
 
 </html>
