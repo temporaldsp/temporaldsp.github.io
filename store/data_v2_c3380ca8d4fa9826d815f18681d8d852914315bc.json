@@ -1,5 +1,5 @@
 {
-  "version": "2026-04-07T04:30:21.274Z",
+  "version": "2026-04-08T04:33:40.540Z",
   "sync_engine": "TemporalDSP Admin Bot v0.0.4",
   "products": [
     {
@@ -53,6 +53,10 @@
         "shippable": null,
         "statement_descriptor": null,
         "tax_code": "txcd_10202000",
+        "tax_details": {
+          "performance_location": null,
+          "tax_code": "txcd_10202000"
+        },
         "type": "service",
         "unit_label": null,
         "updated": 1770888592,
@@ -111,6 +115,10 @@
         "shippable": null,
         "statement_descriptor": null,
         "tax_code": "txcd_10202000",
+        "tax_details": {
+          "performance_location": null,
+          "tax_code": "txcd_10202000"
+        },
         "type": "service",
         "unit_label": null,
         "updated": 1770888702,
@@ -169,6 +177,10 @@
         "shippable": null,
         "statement_descriptor": null,
         "tax_code": "txcd_10202000",
+        "tax_details": {
+          "performance_location": null,
+          "tax_code": "txcd_10202000"
+        },
         "type": "service",
         "unit_label": null,
         "updated": 1770888754,
@@ -228,6 +240,10 @@
         "shippable": null,
         "statement_descriptor": null,
         "tax_code": "txcd_10202000",
+        "tax_details": {
+          "performance_location": null,
+          "tax_code": "txcd_10202000"
+        },
         "type": "service",
         "unit_label": null,
         "updated": 1770825484,
