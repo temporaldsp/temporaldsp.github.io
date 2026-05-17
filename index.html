@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temporal DSP | Professional Audio Workflow</title>
-    
+    <title>TemporalDSP</title>
+    <meta name="description" content="TemporalDSP — audio software, made in Ireland.">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
     <script>
         tailwind.config = {
             theme: {
@@ -17,14 +18,13 @@
                         mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
-                        'deep-space': '#0d1117',
-                        'card-bg': '#161b22',
-                        'border-dim': '#30363d',
-                        // Replaced pink with a darker, punchier Neon Blue
-                        'neon-blue': '#2563eb', 
-                        'neon-cyan': '#00f0ff',
-                        'neon-purple': '#4f46e5', // Deeper Indigo-Blue
-                        'neon-green': '#3fb950',
+                        'deep': '#0a0c10',
+                        'panel': '#11161d',
+                        'line': '#2a323d',
+                        'ink': '#e6edf3',
+                        'dim': '#8b95a4',
+                        'faint': '#4a5260',
+                        'accent': '#3b82f6',
                     }
                 }
             }
@@ -32,176 +32,148 @@
     </script>
 
     <style>
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        .float-slow { animation: float 6s ease-in-out infinite; }
-        
-        .glow-effect {
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(37, 99, 235, 0.2) 0%, rgba(13, 17, 23, 0) 70%);
-            border-radius: 50%;
-            z-index: -1;
-            filter: blur(60px);
+        body {
+            background-image:
+                radial-gradient(ellipse 90% 60% at 50% -20%, rgba(59, 130, 246, 0.10), transparent 60%),
+                radial-gradient(ellipse 50% 40% at 80% 110%, rgba(59, 130, 246, 0.06), transparent 60%);
+            background-attachment: fixed;
         }
 
-        .product-card:hover .glow-border {
-            opacity: 1;
+        .grain {
+            position: fixed;
+            inset: 0;
+            opacity: 0.35;
+            pointer-events: none;
+            z-index: 1;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+            mix-blend-mode: overlay;
+        }
+
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.92); }
+        }
+        .pulse-soft { animation: pulse-soft 2.8s ease-in-out infinite; }
+
+        @keyframes fade-up {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-1 { animation: fade-up 0.8s ease-out 0.1s both; }
+        .fade-2 { animation: fade-up 0.8s ease-out 0.3s both; }
+        .fade-3 { animation: fade-up 0.8s ease-out 0.5s both; }
+        .fade-4 { animation: fade-up 0.8s ease-out 0.7s both; }
+        .fade-5 { animation: fade-up 0.8s ease-out 0.9s both; }
+
+        .text-balance { text-wrap: balance; }
+
+        .hairline { background: linear-gradient(to right, transparent, #2a323d 20%, #2a323d 80%, transparent); height: 1px; }
+
+        .mark-line {
+            position: absolute;
+            background: #2a323d;
         }
     </style>
 </head>
-<body class="bg-deep-space text-gray-300 font-sans overflow-x-hidden selection:bg-neon-blue selection:text-white">
+<body class="bg-deep text-ink font-sans antialiased selection:bg-accent selection:text-white min-h-screen flex flex-col">
 
-    <nav class="flex justify-between items-center py-6 px-8 max-w-7xl mx-auto border-b border-border-dim/30 backdrop-blur-md sticky top-0 z-50 bg-deep-space/80">
-        <div class="text-xl font-bold tracking-tighter text-white">
-            TEMPORAL<span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-neon-cyan">DSP</span>
-        </div>
-        <div class="hidden md:flex gap-8 text-sm font-medium">
-            <a href="#products" class="hover:text-white transition-colors">Products</a>
-            <a href="#licensing" class="hover:text-white transition-colors">Licensing</a>
-            <a href="https://github.com/temporaldsp" class="hover:text-white transition-colors">Open Source</a>
-            <a href="#" class="text-neon-cyan hover:brightness-125 transition-all">Account</a>
-        </div>
-    </nav>
+    <div class="grain"></div>
 
-    <main class="relative max-w-7xl mx-auto px-6 pt-20 pb-32">
-        <div class="glow-effect top-0 left-1/4"></div>
-        <div class="glow-effect bottom-0 right-1/4"></div>
+    <div class="relative z-10 flex-1 flex flex-col">
 
-        <div class="text-center max-w-4xl mx-auto mb-32">
-            <div class="inline-block mb-4 px-4 py-1 rounded-full border border-neon-blue/30 bg-neon-blue/10 text-neon-cyan text-xs font-mono font-bold tracking-widest uppercase">
-                2026 Roadmap Active
+        <!-- Top bar -->
+        <header class="max-w-6xl w-full mx-auto px-6 md:px-10 py-7 flex justify-between items-center fade-1">
+            <div class="flex items-center gap-2.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-accent pulse-soft"></span>
+                <span class="text-sm font-medium tracking-tight text-ink">temporaldsp</span>
             </div>
-            
-            <h1 class="text-6xl md:text-8xl font-extrabold text-white tracking-tighter mb-8 leading-[0.9]">
-                Engineered Tools for Modern Producers <br>
-            </h1>
-            <p class="text-4xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
-                    Start from a Good Place
-            </p>
-            
-            <p class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
-                Simplify gain structure. Build cohesive sessions.
-            </p>
-            
-            <div class="flex flex-col md:flex-row gap-6 justify-center items-center">
-                <a href="#products" class="w-full md:w-auto px-10 py-4 rounded-full bg-white text-deep-space font-bold hover:bg-neon-cyan transition-all transform hover:scale-105 shadow-[0_0_30px_rgba(0,240,255,0.2)]">
-                    View Product Trinity
-                </a>
-                <a href="#" class="w-full md:w-auto px-10 py-4 rounded-full border border-border-dim hover:border-neon-blue bg-card-bg/50 backdrop-blur transition-all font-bold text-white">
-                    Download Freebie: Sub-Zero
-                </a>
-            </div>
-        </div>
+            <a href="mailto:info@temporaldsp.com" class="text-xs font-mono text-dim hover:text-ink transition-colors tracking-wider">
+                info@temporaldsp.com
+            </a>
+        </header>
 
-    <div class="grid md:grid-cols-3 gap-8">
-    
-    <div class="p-8 rounded-2xl bg-card-bg border border-border-dim hover:border-neon-blue/40 transition-all group">
-        <div class="w-12 h-12 rounded-lg bg-neon-blue/10 flex items-center justify-center mb-6 text-neon-blue">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-            </svg>
-        </div>
-        <h3 class="text-xl font-bold text-white mb-3">Engineered Stability</h3>
-        <p class="text-gray-500 text-sm leading-relaxed">
-            Built using memory-safe architecture to ensure rock-solid performance during critical sessions. No memory leaks, no random hangs.
-        </p>
+        <!-- Poster -->
+        <main class="flex-1 flex items-center">
+            <div class="max-w-6xl w-full mx-auto px-6 md:px-10 py-20 md:py-32">
+
+                <div class="relative">
+
+                    <!-- Corner marks -->
+                    <div class="absolute -top-6 -left-6 w-8 h-8 hidden md:block">
+                        <div class="absolute top-0 left-0 w-full h-px bg-line"></div>
+                        <div class="absolute top-0 left-0 w-px h-full bg-line"></div>
+                    </div>
+                    <div class="absolute -top-6 -right-6 w-8 h-8 hidden md:block">
+                        <div class="absolute top-0 right-0 w-full h-px bg-line"></div>
+                        <div class="absolute top-0 right-0 w-px h-full bg-line"></div>
+                    </div>
+                    <div class="absolute -bottom-6 -left-6 w-8 h-8 hidden md:block">
+                        <div class="absolute bottom-0 left-0 w-full h-px bg-line"></div>
+                        <div class="absolute bottom-0 left-0 w-px h-full bg-line"></div>
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 w-8 h-8 hidden md:block">
+                        <div class="absolute bottom-0 right-0 w-full h-px bg-line"></div>
+                        <div class="absolute bottom-0 right-0 w-px h-full bg-line"></div>
+                    </div>
+
+                    <!-- Top meta row -->
+                    <div class="flex justify-between items-baseline mb-12 md:mb-20 fade-2">
+                        <div class="text-[10px] font-mono text-faint tracking-[0.25em] uppercase">
+                            est. 2025
+                        </div>
+                        <div class="text-[10px] font-mono text-faint tracking-[0.25em] uppercase">
+                            Ireland · EU
+                        </div>
+                    </div>
+
+                    <!-- The statement -->
+                    <div class="text-center mb-12 md:mb-20">
+                        <h1 class="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight leading-[0.95] text-balance fade-2">
+                            <span class="text-ink">Audio software,</span><br>
+                            <span class="text-dim">engineered.</span>
+                        </h1>
+                    </div>
+
+                    <!-- Subtitle -->
+                    <div class="max-w-xl mx-auto text-center mb-16 md:mb-24 fade-3">
+                        <p class="text-base md:text-lg text-dim leading-relaxed text-balance">
+                            For the people who mix.
+                        </p>
+                    </div>
+
+                    <!-- Hairline -->
+                    <div class="hairline mb-16 md:mb-24 fade-4"></div>
+
+                    <!-- Footer triad -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-10 sm:gap-16 max-w-2xl mx-auto fade-5">
+                        <div class="text-center sm:text-right">
+                            <div class="text-[10px] font-mono text-faint tracking-[0.25em] uppercase mb-3">Discipline</div>
+                            <div class="text-sm text-ink">Precision audio engineering</div>
+                        </div>
+                        <div class="text-center sm:text-left">
+                            <div class="text-[10px] font-mono text-faint tracking-[0.25em] uppercase mb-3">Platform</div>
+                            <div class="text-sm text-ink">macOS · Apple Silicon</div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="max-w-6xl w-full mx-auto px-6 md:px-10 py-8 flex flex-col sm:flex-row justify-between items-center gap-4 fade-5">
+            <div class="text-[10px] font-mono text-faint tracking-wider uppercase">
+                © 2025 TemporalDSP · Trading as J.A. Ryan
+            </div>
+            <div class="flex gap-6 text-[10px] font-mono text-faint tracking-[0.2em] uppercase">
+                <a href="/privacy-policy.html" class="hover:text-dim transition-colors">Privacy</a>
+                <a href="/terms-of-service.html" class="hover:text-dim transition-colors">Terms</a>
+                <a href="/support.html" class="hover:text-dim transition-colors">Support</a>
+            </div>
+        </footer>
+
     </div>
 
-    <div class="p-8 rounded-2xl bg-card-bg border border-border-dim hover:border-neon-cyan/40 transition-all group">
-        <div class="w-12 h-12 rounded-lg bg-neon-cyan/10 flex items-center justify-center mb-6 text-neon-cyan">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-            </svg>
-        </div>
-        <h3 class="text-xl font-bold text-white mb-3">Minimal Footprint</h3>
-        <p class="text-gray-500 text-sm leading-relaxed">
-            By utilizing native system resources, our utilities maintain an incredibly small disk and RAM footprint—leaving more power for your DAW.
-        </p>
-    </div>
-
-    <div class="p-8 rounded-2xl bg-card-bg border border-border-dim hover:border-neon-green/40 transition-all group">
-        <div class="w-12 h-12 rounded-lg bg-neon-green/10 flex items-center justify-center mb-6 text-neon-green">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-            </svg>
-        </div>
-        <h3 class="text-xl font-bold text-white mb-3">Signal Integrity</h3>
-        <p class="text-gray-500 text-sm leading-relaxed">
-            Transparent processing designed to respect the source material. We focus on phase-coherent algorithms that sound natural.
-        </p>
-    </div>
-
-</div>
-
-    <div id="licensing" class="mt-40 p-12 rounded-3xl border border-border-dim bg-gradient-to-b from-card-bg to-deep-space text-center max-w-5xl mx-auto">
-        <h2 class="text-3xl font-bold text-white mb-6">Licensed for Professionals</h2>
-        <p class="text-gray-400 max-w-2xl mx-auto mb-8">
-            Designed to stay out of your way. Our "Quiet-IO" Perpetual Licensing focuses on non-intrusive verification, allowing you to stay focused on the music. No dongles required—just professional tools that respect your privacy and your system resources.
-        </p>
-        <div class="flex flex-wrap justify-center gap-10 opacity-60">
-            <div class="flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-neon-cyan"></span>
-                <span class="font-mono text-[10px] uppercase tracking-[0.2em]">Hardware Anchored</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-neon-cyan"></span>
-                <span class="font-mono text-[10px] uppercase tracking-[0.2em]">Minimal Background I/O</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-neon-cyan"></span>
-                <span class="font-mono text-[10px] uppercase tracking-[0.2em]">Offline-Ready Architecture</span>
-            </div>
-        </div>
-    </div>
-
-    </main>
-
-    <footer class="border-t border-border-dim/30 py-16 text-center text-sm text-gray-600 font-mono">
-        <div class="mb-8">
-            <div class="text-white font-bold mb-2">TEMPORALDSP</div>
-            <p class="opacity-50">Precision Audio Engineering • Ireland</p>
-        </div>
-        
-        <nav class="mb-8 space-x-6 text-xs uppercase tracking-widest">
-            <a href="https://temporaldsp.com/privacy-policy.html" class="hover:text-neon-cyan">Privacy</a>
-            <a href="https://temporaldsp.com/terms-of-service.html" class="hover:text-neon-cyan">Terms</a>
-            <a href="https://temporaldsp.com/support.html" class="hover:text-neon-cyan">Support</a>
-        </nav>
-
-        <p class="text-[10px] opacity-30 uppercase tracking-[0.2em]">© 2026 TemporalDSP. Trading as J. A. Ryan. Tellemgana House. Cork. Ireland.</p>
-    </footer>
-
-    <div id="cookie-banner" class="fixed bottom-6 right-6 left-6 md:left-auto md:w-96 bg-card-bg border border-border-dim p-6 rounded-2xl shadow-2xl z-[100]" style="display: none;">
-        <p class="text-sm text-gray-300 mb-4 leading-relaxed">
-            We use secure cookies to verify your hardware license and ensure reliability.
-        </p>
-        <div class="flex gap-3">
-            <button onclick="acceptCookies()" class="flex-1 px-4 py-2 bg-white text-black text-xs font-bold rounded-lg hover:bg-neon-cyan transition-colors">Accept</button>
-            <button onclick="denyCookies()" class="px-4 py-2 border border-border-dim text-xs rounded-lg hover:bg-gray-800 transition-colors">Deny</button>
-        </div>
-    </div>
-
-    <script>
-        window.addEventListener('load', function() {
-            if (!localStorage.getItem('temporal_cookie_consent')) {
-                document.getElementById('cookie-banner').style.display = 'block';
-            }
-        });
-
-        function acceptCookies() {
-            localStorage.setItem('temporal_cookie_consent', 'accepted');
-            document.getElementById('cookie-banner').style.display = 'none';
-        }
-
-        function denyCookies() {
-            localStorage.setItem('temporal_cookie_consent', 'denied');
-            document.getElementById('cookie-banner').style.display = 'none';
-        }
-    </script>
 </body>
 </html>
