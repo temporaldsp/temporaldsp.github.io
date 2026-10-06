@@ -161,10 +161,10 @@
             </div>
         </main>
 
-        <!-- Footer -->
+             <!-- Footer -->
         <footer class="max-w-6xl w-full mx-auto px-6 md:px-10 py-8 flex flex-col sm:flex-row justify-between items-center gap-4 fade-5">
             <div class="text-[10px] font-mono text-faint tracking-wider uppercase">
-                © 2025 TemporalDSP · Trading as J.A.Ryan
+                © 2025–<span id="footer-year">2026</span> TemporalDSP · Trading as J.A.Ryan
             </div>
             <div class="flex gap-6 text-[10px] font-mono text-faint tracking-[0.2em] uppercase">
                 <a href="/privacy-policy.html" class="hover:text-dim transition-colors">Privacy</a>
@@ -172,7 +172,11 @@
                 <a href="/support.html" class="hover:text-dim transition-colors">Support</a>
             </div>
         </footer>
-
+        <script>
+            // MARK: - Footer year
+            // Fills in the current year; the hardcoded "2026" shows if JavaScript is off.
+            document.getElementById("footer-year").textContent = new Date().getFullYear();
+        </script>
     </div>
 
 </body>
